@@ -26,7 +26,75 @@
                 },
                 "responses": {
                     "201":{
-                        "description": "Sucesso"
+                        "description": "Sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "verification_code":{
+                                            "type": "integer",
+                                            "example": 2083
+                                        },
+                                        "registration_data":{
+                                            "type": "object",
+                                            "properties": {
+                                                "name":{
+                                                    "type": "string",
+                                                    "example": "Pixlog"
+                                                },
+                                                "cpf":{
+                                                    "type": "string",
+                                                    "example": "627.820.760-51"
+                                                },
+                                                "phone":{
+                                                    "type": "string",
+                                                    "example": "+55 41 99868-5562"
+                                                },
+                                                "reg_id":{
+                                                    "type": "integer",
+                                                    "example": "Bx4oyRJ6b3pTC8pn1YFyS"
+                                                },
+                                                "credits":{
+                                                    "type": "number",
+                                                    "example": 0
+                                                },
+                                                "subscription":{
+                                                    "type": "string",
+                                                    "example": "free"
+
+                                                },
+                                                "address_id":{
+                                                    "type": "string",
+                                                    "example": null
+                                                },
+                                                "login_id":{
+                                                    "type": "string",
+                                                    "example": "8yCapVpTAVxHCuoDjPp7z"
+                                                }
+                                            }
+                                        },
+                                        "login":{
+                                            "type": "object",
+                                            "properties": {
+                                                "email":{
+                                                    "type": "string",
+                                                    "example": "dev@pixlog.com.br"
+                                                },
+                                                "password":{
+                                                    "type": "string",
+                                                    "example": "$2b$10$mmcBO0vR.2P4h.Y1QzPJN.50NIVpxOb6bbESEgDuQ5A79MoJd07M."
+                                                },
+                                                "login_id":{
+                                                    "type": "string",
+                                                    "example": "8yCapVpTAVxHCuoDjPp7z"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "400":{
                         "description": "Erro"
@@ -157,6 +225,158 @@
                         }
                     }
                 ],
+                "tags": ["users: Usuários"]
+            }
+        },
+        "/v1/user/feedback": {
+            "post": {
+                "summary": "Cadastra a avaliação de um usuário",
+                "description": "Utilize esta função para adicionar a avaliação de um usuário no sistema.",
+                "responses": {
+                    "201":{
+                        "description": "Sucesso"
+                    },
+                    "400":{
+                        "description": "Erro"
+                    }
+                },
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "type":"object",
+                                "properties": {
+                                    "rate":{
+                                        "type": "integer",
+                                        "example": 5 
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["users: Usuários"]
+            }
+        },
+        "/v1/user/validate": {
+            "post": {
+                "summary": "Verifica se um email existe no sistema",
+                "description": "Utilize esta função para verificar se um email já existe no sistema.",
+                "responses": {
+                    "201":{
+                        "description": "Sucesso"
+                    },
+                    "400":{
+                        "description": "Erro"
+                    }
+                },
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "type":"object",
+                                "properties": {
+                                    "email":{
+                                        "type": "string",
+                                        "example": "dev@pixlog.com.br"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["users: Usuários"]
+            }
+        },
+        "/v1/user/password": {
+            "put": {
+                "summary": "Requisita uma senha de emergência",
+                "description": "Utilize esta função para perdir uma senha de acesso ao sistema.",
+                "responses": {
+                    "201":{
+                        "description": "Sucesso"
+                    },
+                    "400":{
+                        "description": "Erro"
+                    }
+                },
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "type":"object",
+                                "properties": {
+                                    "email":{
+                                        "type": "string",
+                                        "example": "dev@pixlog.com.br"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["users: Usuários"]
+            }
+        },
+        "/v1/user/code": {
+            "post": {
+                "summary": "Confirma o email de um usuário.",
+                "description": "Utilize essa função para confirmar o email de um usuário.",
+                "responses": {
+                    "201":{
+                        "description": "Sucesso"
+                    },
+                    "400":{
+                        "description": "Erro"
+                    }
+                },
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "type":"object",
+                                "properties": {
+                                    "email":{
+                                        "type": "string",
+                                        "example": "dev@pixlog.com.br"
+                                    },
+                                    "verification_code":{
+                                        "type": "number",
+                                        "example": 3210
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["users: Usuários"]
+            },
+            "put": {
+                "summary": "Requisita um novo código de confirmação.",
+                "description": "Utilize esta função para pedir um novo código para confirmar email.",
+                "responses": {
+                    "201":{
+                        "description": "Sucesso"
+                    },
+                    "400":{
+                        "description": "Erro"
+                    }
+                },
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "type":"object",
+                                "properties": {
+                                    "email":{
+                                        "type": "string",
+                                        "example": "dev@pixlog.com.br"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
                 "tags": ["users: Usuários"]
             }
         },
