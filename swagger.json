@@ -1,0 +1,481 @@
+{
+    "openapi": "3.0.3",
+    "info":{
+        "title": "PixLog Backend",
+        "version": "1.0.0",
+        "description": "Sistema de backend do PixLog, codificado em NodeJS com banco de dados em MySQL(MariaDB)."
+    },
+    "servers": [
+        { "url": "https://d96c-187-95-145-10.sa.ngrok.io/api", "description": "Servidor de desenvolvimento" }
+    ],
+    "paths": {
+        "/v1/user": {
+            "post": {
+                "summary": "Cadastra um novo usuário.",
+                "tags": ["users: Usuários"],
+                "description": "Utilize esta função para criar novos usuários na plataforma. Usuário é uma das entidades básicas do sistema. Ele representa a pessoa física ou jurídica.",
+                "operationId": "postUser",
+                "requestBody": {
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                },
+                "responses": {
+                    "201":{
+                        "description": "Sucesso"
+                    },
+                    "400":{
+                        "description": "Erro"
+                    }
+                }
+                
+            },
+            "get": {
+                "summary": "Retorna um usuário.",
+                "description": "Utilize essa rota para listar as informações de um usuário utilizando sua chave de acesso",
+                "tags": ["users: Usuários"],
+                "responses": {
+                    "201":{
+                        "description": "Sucesso"
+                    },
+                    "400":{
+                        "description": "Erro"
+                    }
+                },
+                "requestBody":{
+                    "content": {}
+                },
+                "parameters": [
+                    {
+                        "name": "x-auth-token",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhZmFlbEBwaXhsb2cuY29tLmJyIiwiaWF0IjoxNjUwOTA0MjAyLCJleHAiOjE2NTA5NDAyMDJ9.oiuVgGaaTIv324-K-X7zk8fzgJyh_Ub_lMURJuT4euo"
+                        }
+                    }
+                ]
+            },
+            "put": {
+                "summary": "[DESATIVADA] Atualiza um usuário através do ID.",
+                "description": "Return user information",
+                "responses": {
+                    "201":{
+                        "description": "Sucesso"
+                    },
+                    "400":{
+                        "description": "Erro"
+                    }
+                },
+                "tags": ["users: Usuários"]
+            },
+            "delete": {
+                "summary": "[DESATIVADA] Arquiva um usário específico através do ID.",
+                "description": "Return user information",
+                "responses": {
+                    "201":{
+                        "description": "Sucesso"
+                    },
+                    "400":{
+                        "description": "Erro"
+                    }
+                },
+                "tags": ["users: Usuários"]
+            }
+        },
+        "/v1/user/unarchive": {
+            "post": {
+                "summary": "[DESATIVADA] Reverte o arquivamento de um usuário.",
+                "description": "Utilize esta função para criar novos usuários na plataforma. Usuário é uma das entidades básicas do sistema. Ele representa a pessoa física ou jurídica que possui uma ou mais assinaturas.",
+                "responses": {
+                    "201":{
+                        "description": "Sucesso"
+                    },
+                    "400":{
+                        "description": "Erro"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "tags": ["users: Usuários"]
+            }
+        },
+        "/v1/user/authenticate": {
+            "post": {
+                "summary": "Valida um usuário e retorna uma chave de acesso.",
+                "description": "Utilize esta função autorizar os acesso de um usuário a plataforma.",
+                "responses": {
+                    "201":{
+                        "description": "Sucesso"
+                    },
+                    "400":{
+                        "description": "Erro"
+                    }
+                },
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/login"
+                            }
+                        }
+                    }
+                },
+                "tags": ["users: Usuários"]
+            },
+            "put": {
+                "summary": "Extende a chave de acesso de um usuário.",
+                "description": "Utilize esta função para extender o acesso de um usuário.",
+                "responses": {
+                    "201":{
+                        "description": "Sucesso"
+                    },
+                    "400":{
+                        "description": "Erro"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "cookie",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhZmFlbEBwaXhsb2cuY29tLmJyIiwiaWF0IjoxNjUwOTA0MjAyLCJleHAiOjE2NTA5NDAyMDJ9.oiuVgGaaTIv324-K-X7zk8fzgJyh_Ub_lMURJuT4euo"
+                        }
+                    }
+                ],
+                "tags": ["users: Usuários"]
+            }
+        },
+        "/v1/report": {
+            "post": {
+                "summary": "Cadastra um relatório.",
+                "description": "Utilize essa rota para salvar os dados do relatório no banco de dados.",
+                "tags": ["reports: Relatórios"],
+                "responses": {
+                    "201":{
+                        "description": "Sucesso"
+                    },
+                    "400":{
+                        "description": "Erro"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json":{
+                            "schema": {
+                                "$ref": "#/components/schemas/Relatorio"
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "Retorna todos relatórios de um usuário.",
+                "description": "Utilize essa rota para listar todos os relatórios de um usuário.",
+                "tags": ["reports: Relatórios"],
+                "responses": {
+                    "201":{
+                        "description": "Sucesso"
+                    },
+                    "400":{
+                        "description": "Erro"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "init",
+                        "in": "query",
+                        "required": false,
+                        "description": "Relatórios apartir da data inicial.",
+                        "schema": {
+                            "type": "string",
+                            "example": "2022-01-01"
+                        }
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "required": false,
+                        "description": "Relatórios até a data final.",
+                        "schema": {
+                            "type": "string",
+                            "example": "2022-12-01"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "description": "Limite de relatórios que serão listados.",
+                        "schema": {
+                            "type": "integer",
+                            "example": 30
+                        }
+                    }
+                ]
+            }
+        },
+        "/v1/report/:report_id": {
+            "post": {
+                "summary": "Envia um relatório para núvem.",
+                "description": "Utilize essa rota para enviar um pdf do relatório ao cloud.",
+                "tags": ["reports: Relatórios"],
+                "responses": {
+                    "201":{
+                        "description": "Sucesso"
+                    },
+                    "400":{
+                        "description": "Erro"
+                    }
+                },
+                "requestBody":{
+                    "description": "",
+                    "content": {
+                        "arquivo/pdf":{
+    
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "Retorna as informações de um relatório ou o arquivo pdf.",
+                "description": "Utilize essa rota para listar um pdf com informações mais detalhadas.",
+                "responses": {
+                    "201":{
+                        "description": "Sucesso"
+                    },
+                    "400":{
+                        "description": "Erro"
+                    }
+                },
+                "tags": ["reports: Relatórios"]
+            }
+        },
+
+        "/v1/debug": {
+            "post": {
+                "summary": "Envia um arquivo de depuração para núvem.",
+                "description": "Utilize essa rota para enviar um arquivo de depuração para cloud.",
+                "tags": ["debug: Depuração"],
+                "responses": {
+                    "201":{
+                        "description": "Sucesso"
+                    },
+                    "400":{
+                        "description": "Erro"
+                    }
+                },
+                "requestBody":{
+                    "description": "",
+                    "content": {
+                        "arquivo/txt":{
+
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "type": "object",
+                "properties": {
+                    "registration_data": {
+                        "type": "object",
+                        "$ref": "#/components/schemas/registration_data"
+                    },
+                    "login": {
+                        "type": "object",
+                        "$ref": "#/components/schemas/login"
+                    }
+                },
+                "required": ["registration_data", "login"]
+            },
+            "Relatorio": {
+                "type": "object",
+                "properties": {
+                    "duration_in_sec": {
+                        "type": "integer",
+                        "example": 392
+                    },
+                    "latitude": {
+                        "type": "number",
+                        "format": "float",
+                        "example": -25.438365720891973
+                    },
+                    "longitude": {
+                        "type": "number",
+                        "format": "float",
+                        "example": -49.2806723716233
+                    },
+                    "volume": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 30.5
+                    },
+                    "volume_formula": {
+                        "type": "string",
+                        "example": "cilíndrica"
+                    },
+                    "specie_found": {
+                        "type": "string",
+                        "example": "pinus"
+                    },
+                    "length": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 3.10
+                    },
+                    "measure_type": {
+                        "type": "string",
+                        "example": "metros"
+                    },
+                    "scanned_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "logs": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties":{
+                                "confiability": {
+                                    "type": "integer",
+                                    "format": "float",
+                                    "example": 0.8903588200176159
+                                },
+                                "height": {
+                                    "type": "integer",
+                                    "format": "float",
+                                    "example": 0.28
+                                },
+                                "width": {
+                                    "type": "integer",
+                                    "format": "float",
+                                    "example": 0.25
+                                },
+                                "position_x": {
+                                    "type": "integer",
+                                    "format": "float",
+                                    "example": 0.12294983577131324
+                                },
+                                "position_y": {
+                                    "type": "integer",
+                                    "format": "float",
+                                    "example": 0.1432519030286129
+                                }
+                            },
+                            "required": [
+                                "position_y",
+                                "position_x",
+                                "width",
+                                "height",
+                                "confiability"
+                            ]
+                        }
+                    }
+                },
+                "required": [
+                    "logs", 
+                    "scanned_at", 
+                    "measure_type", 
+                    "length", 
+                    "volume_formula", 
+                    "volume",
+                    "longitude",
+                    "latitude",
+                    "duration_in_sec"
+                ]
+            },       
+            "address": {
+                "type": "object",
+                "properties": {
+                    "cep": {
+                        "type": "string"
+                    },
+                    "rua": {
+                        "type": "string"
+                    },
+                    "bairro": {
+                        "type": "string"
+                    },
+                    "pais": {
+                        "type": "string"
+                    },
+                    "cidade": {
+                        "type": "string"
+                    },
+                    "estado": {
+                        "type": "string"
+                    }
+                }
+            },
+            "registration_data": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Pixlog"
+                    },
+                    "cpf": {
+                        "type": "string",
+                        "example": "627.820.760-51"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "+55 41 99868-5562"
+                    }
+                },
+                "required": ["name", "phone", "cpf"]
+            },
+            "login": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "dev@pixlog.com.br"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "Dev@2022"
+                    }
+                },
+                "required": ["email", "password"]
+            },
+            "ErrorResponse": {
+                "type": "object",
+                "properties": {
+                    "errors":{
+                        "type": "array",
+                        "items":{
+                            "type": "object",
+                            "properties":{
+                                "name": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
