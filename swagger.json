@@ -13,101 +13,60 @@
             "post": {
                 "summary": "Cadastra um novo usuário.",
                 "tags": ["users: Usuários"],
-                "description": "Utilize esta função para criar novos usuários na plataforma. Usuário é uma das entidades básicas do sistema. Ele representa a pessoa física ou jurídica.",
-                "operationId": "postUser",
+                "description": "Utilize esta função para criar novos usuários na plataforma. Usuário é uma das entidades básicas do sistema.",
                 "requestBody": {
-                        "content": {
-                            "application/json":{
-                                "schema":{
-                                    "$ref": "#/components/schemas/User"
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/postV1Users"
+                            },
+                            "example":{
+                                "registration_data":{
+                                    "name": "Pixlog",
+                                    "cpf": "627.820.760-51",
+                                    "phone": "+55 41 99868-5562"
+                                },
+                                "login":{
+                                    "email": "dev@pixlog.com.br",
+                                    "password": "Dev@Pixlog2020"
                                 }
                             }
                         }
+                    }
                 },
                 "responses": {
                     "201":{
                         "description": "Cliente cadastrado com sucesso.",
-                        "content": {
-                            "application/json": {
+                        "content":{
+                            "application/json":{
                                 "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "verification_code":{
-                                            "type": "integer",
-                                            "example": 2083
-                                        },
-                                        "registration_data":{
-                                            "type": "object",
-                                            "properties": {
-                                                "name":{
-                                                    "type": "string",
-                                                    "example": "Pixlog"
-                                                },
-                                                "cpf":{
-                                                    "type": "string",
-                                                    "example": "627.820.760-51"
-                                                },
-                                                "phone":{
-                                                    "type": "string",
-                                                    "example": "+55 41 99868-5562"
-                                                },
-                                                "reg_id":{
-                                                    "type": "integer",
-                                                    "example": "Bx4oyRJ6b3pTC8pn1YFyS"
-                                                },
-                                                "credits":{
-                                                    "type": "number",
-                                                    "example": 0
-                                                },
-                                                "subscription":{
-                                                    "type": "string",
-                                                    "example": "free"
-
-                                                },
-                                                "address_id":{
-                                                    "type": "string",
-                                                    "example": null
-                                                },
-                                                "login_id":{
-                                                    "type": "string",
-                                                    "example": "8yCapVpTAVxHCuoDjPp7z"
-                                                }
-                                            }
-                                        },
-                                        "login":{
-                                            "type": "object",
-                                            "properties": {
-                                                "email":{
-                                                    "type": "string",
-                                                    "example": "dev@pixlog.com.br"
-                                                },
-                                                "password":{
-                                                    "type": "string",
-                                                    "example": "$2b$10$mmcBO0vR.2P4h.Y1QzPJN.50NIVpxOb6bbESEgDuQ5A79MoJd07M."
-                                                },
-                                                "login_id":{
-                                                    "type": "string",
-                                                    "example": "8yCapVpTAVxHCuoDjPp7z"
-                                                }
-                                            }
-                                        }
+                                    "$ref": "#/components/schemas/postV1Users"
+                                },
+                                "example":{
+                                    "registration_data":{
+                                        "name": "Pixlog",
+                                        "cpf": "627.820.760-51",
+                                        "phone": "+55 41 99868-5562",
+                                        "reg_id": "Bx4oyRJ6b3pTC8pn1YFyS",
+                                        "credits": 0,
+                                        "subscription": "free",
+                                        "login_id": "8yCapVpTAVxHCuoDjPp7z"
+                                    },
+                                    "login":{
+                                        "email": "dev@pixlog.com.br",
+                                        "password": "He8ytdfq"
                                     }
                                 }
                             }
                         }
                     },
                     "422":{
-                        "description": "Parâmetros inválidos. Verificar erro na resposta.",
-                        "content": {
-                            "application/json":{
-                                "schema":{
-                                    "$ref": "#/components/schemas/422"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/422"
+                    },
+                    "400":{
+                        "$ref": "#/components/responses/400"
                     }
                 }
-                
             },
             "get": {
                 "summary": "Retorna um usuário.",
@@ -122,77 +81,71 @@
                                     "type": "object",
                                     "properties": {
                                         "reg_id":{
-                                            "type": "string",
-                                            "example": "Bx4oyRJ6b3pTC8pn1YFyS"
-                                        },
-                                        "email":{
-                                            "type": "string",
-                                            "example": "dev@pixlog.com.br"
+                                            "type": "string"
                                         },
                                         "name":{
-                                            "type": "string",
-                                            "example": "Pixlog"
+                                            "type": "string"
+                                        },
+                                        "email":{
+                                            "type": "string"
                                         },
                                         "phone":{
-                                            "type": "string",
-                                            "example": "+55 41 99868-5562"
+                                            "type": "string"
                                         },
                                         "cpf":{
-                                            "type": "string",
-                                            "example": "627.820.760-51"
+                                            "type": "string"
+                                        },
+                                        "subscriptions":{
+                                            "type": "string"
+                                        },
+                                        "credits":{
+                                            "type": "number"
                                         },
                                         "feedback":{
                                             "type": "string",
                                             "format": "date-time"
                                         },
-                                        "workplaces":{
+                                        "workspace":{
                                             "type": "array",
                                             "items":{
                                                 "type": "object",
                                                 "properties":{
-                                                    "subscription": {
-                                                        "type": "string",
-                                                        "example": "free"
+                                                    "workspace_id":{
+                                                        "type": "string"
                                                     },
                                                     "name":{
-                                                        "type": "string",
-                                                        "example": "Pixlog"
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "invitations":{
+                                            "type": "array",
+                                            "items":{
+                                                "type": "object",
+                                                "properties":{
+                                                    "reg_id":{
+                                                        "type": "string"
                                                     },
-                                                    "email":{
-                                                        "type": "string",
-                                                        "example": "dev@pixlog.com.br"
-                                                    },
-                                                    "phone":{
-                                                        "type": "string",
-                                                        "example": "+55 41 99868-5562"
-                                                    },
-                                                    "cpf":{
-                                                        "type": "string",
-                                                        "example": "627.820.760-51"
-                                                    },
-                                                    "isCompany":{
-                                                        "type": "boolean",
-                                                        "example": false
-                                                    },
-                                                    "credits":{
-                                                        "type": "number",
-                                                        "example": 0.00
-                                                    },
-                                                    "owner_id":{
-                                                        "type": "string",
-                                                        "example": "Bx4oyRJ6b3pTC8pn1YFyS" 
-                                                    },
-                                                    "invitations": {
-                                                        "type": "array",
-                                                        "items":{
-                                                            "type": "string",
-                                                            "example": null
-                                                        }
+                                                    "name":{
+                                                        "type": "string"
                                                     }
                                                 }
                                             }
                                         }
                                     }
+                                },
+                                "example":{
+                                    "reg_id": "r95CZXQDcz71Xzf5w0OFn",
+                                    "name": "Postman",
+                                    "email": "bruno@pixlog.com.br",
+                                    "phone": "+10 0 0000-0000",
+                                    "cpf": "122.456.789-10",
+                                    "subscription": "free",
+                                    "credits": 0.00,
+                                    "feedback": "2022-07-04T19:01:29.000Z",
+                                    "workspace": [],
+                                    "invitations": []
                                 }
                             }
                         }
@@ -202,7 +155,7 @@
                         "content": {
                             "application/json":{
                                 "schema":{
-                                    "$ref": "#/components/schemas/ErrorBase"
+                                    
                                 }
                             }
                         }
@@ -212,7 +165,7 @@
                         "content": {
                             "application/json":{
                                 "schema":{
-                                    "$ref": "#/components/schemas/ErrorBase"
+                                    
                                 }
                             }
                         }
@@ -276,7 +229,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/User"
+                                "$ref": "#/components/schemas/postV1Users"
                             }
                         }
                     }
@@ -509,7 +462,7 @@
                     "content": {
                         "application/json":{
                             "schema": {
-                                "$ref": "#/components/schemas/Relatorio"
+                                "$ref": "#/components/schemas/postV1Reports"
                             }
                         }
                     }
@@ -636,21 +589,21 @@
     },
     "components": {
         "schemas": {
-            "User": {
+            "postV1Users":{
                 "type": "object",
-                "properties": {
-                    "registration_data": {
+                "properties":{
+                    "registration_data":{
                         "type": "object",
                         "$ref": "#/components/schemas/registration_data"
                     },
-                    "login": {
+                    "login":{
                         "type": "object",
                         "$ref": "#/components/schemas/login"
                     }
                 },
                 "required": ["registration_data", "login"]
             },
-            "Relatorio": {
+            "postV1Reports":{
                 "type": "object",
                 "properties": {
                     "duration_in_sec": {
@@ -773,16 +726,16 @@
                 "type": "object",
                 "properties": {
                     "name": {
-                        "type": "string",
-                        "example": "Pixlog"
+                        "description": "Nome do cliente",
+                        "type": "string"
                     },
                     "cpf": {
-                        "type": "string",
-                        "example": "627.820.760-51"
+                        "description": "CPF do cliente",
+                        "type": "string"
                     },
                     "phone": {
-                        "type": "string",
-                        "example": "+55 41 99868-5562"
+                        "description": "Número de telefone do cliente",
+                        "type": "string"
                     }
                 },
                 "required": ["name", "phone", "cpf"]
@@ -791,64 +744,73 @@
                 "type": "object",
                 "properties": {
                     "email": {
-                        "type": "string",
-                        "example": "dev@pixlog.com.br"
+                        "description": "E-mail do cliente",
+                        "type": "string"
                     },
                     "password": {
-                        "type": "string",
-                        "example": "Dev@2022"
+                        "description": "Senha do cliente",
+                        "type": "string"
                     }
                 },
                 "required": ["email", "password"]
             },
-            "422": {
+            "BaseError":{
                 "type": "object",
-                "properties": {
+                "properties":{
                     "errors":{
                         "type": "array",
                         "items":{
                             "type": "object",
                             "properties":{
-                                "name": {
-                                    "type": "string",
-                                    "example": "Invalid params."
+                                "name":{
+                                    "type": "string"
                                 },
-                                "details": {
-                                    "type": "array",
-                                    "items":{
-                                        "type": "object",
-                                        "properties": {
-                                            "parameter":{
-                                                "type":"string",
-                                                "example": "[ parâmetro que não está válido ]"
-                                            },
-                                            "message":{
-                                                "type":"string",
-                                                "example": "[ mensagem explicando o porque ele não é valido ]"
-                                            }
-                                        }
-                                    }
+                                "details":{
+                                    "type": "string"
                                 }
                             }
                         }
                     }
                 }
+            }
+        },
+        "responses":{
+            "400":{
+                "description": "Erro de sintaxe JSON no corpo do request.",
+                "content":{
+                    "application/json":{
+                        "schema":{
+                            "$ref": "#/components/schemas/BaseError"
+                        }
+                    }
+                }
             },
-            "ErrorBase": {
-                "type": "object",
-                "properties": {
-                    "errors":{
-                        "type": "array",
-                        "items":{
-                            "type": "object",
-                            "properties":{
-                                "name": {
-                                    "type": "string"
-                                },
-                                "details": {
-                                    "type": "string"
-                                }
-                            }
+            "401":{
+                "description": "Parâmetros únicos conflitam com informações do sistema.",
+                "content":{
+                    "application/json":{
+                        "schema":{
+                            "$ref": "#/components/schemas/BaseError"
+                        }
+                    }
+                }
+            },
+            "409":{
+                "description": "Parâmetros únicos conflitam com informações do sistema.",
+                "content":{
+                    "application/json":{
+                        "schema":{
+                            "$ref": "#/components/schemas/BaseError"
+                        }
+                    }
+                }
+            },
+            "422":{
+                "description": "Parâmetros inválidos. Verificar erro na resposta.",
+                "content":{
+                    "application/json":{
+                        "schema":{
+                            "$ref": "#/components/schemas/BaseError"
                         }
                     }
                 }
