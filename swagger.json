@@ -3,23 +3,26 @@
     "info":{
         "title": "PixLog Backend",
         "version": "1.0.0",
+        "license": {
+            "name": "Pixlog",
+            "url": "https://pixlog.com.br/termos-de-uso.html"
+        },
         "description": "Sistema de backend do PixLog, codificado em NodeJS com banco de dados em MySQL(MariaDB)."
     },
     "servers": [
-        { "url": "https://d96c-187-95-145-10.sa.ngrok.io/api", "description": "Servidor de desenvolvimento" }
+        { "url": "https://api.pixlog.com.br", "description": "Servidor de produção" },
+        { "url": "https://stage.pixlog.com.br", "description": "Servidor de staging" }
     ],
     "paths": {
         "/v1/user": {
             "post": {
                 "summary": "Cadastra um novo usuário.",
                 "tags": ["users: Usuários"],
+                "operationId": "createUser",
                 "description": "Utilize esta função para criar novos usuários na plataforma. Usuário é uma das entidades básicas do sistema.",
                 "requestBody": {
                     "content": {
                         "application/json":{
-                            "schema":{
-                                "$ref": "#/components/schemas/postV1Users"
-                            },
                             "example":{
                                 "registration_data":{
                                     "name": "Pixlog",
@@ -29,6 +32,9 @@
                                 "login":{
                                     "email": "dev@pixlog.com.br",
                                     "password": "Dev@Pixlog2020"
+                                },
+                                "address":{
+                                    "level2long": "CURITIBA"
                                 }
                             }
                         }
@@ -39,9 +45,6 @@
                         "description": "Cliente cadastrado com sucesso.",
                         "content":{
                             "application/json":{
-                                "schema": {
-                                    "$ref": "#/components/schemas/postV1Users"
-                                },
                                 "example":{
                                     "registration_data":{
                                         "name": "Pixlog",
@@ -53,8 +56,13 @@
                                         "login_id": "8yCapVpTAVxHCuoDjPp7z"
                                     },
                                     "login":{
+                                        "login_id": "8yCapVpTAVxHCuoDjPp7z",
                                         "email": "dev@pixlog.com.br",
                                         "password": "He8ytdfq"
+                                    },
+                                    "address": {
+                                        "level2long": "CURITIBA",
+                                        "address_id": "B5CapVpTAV3HoDSDjPp7z"
                                     }
                                 }
                             }
@@ -70,6 +78,7 @@
             },
             "get": {
                 "summary": "Retorna um usuário.",
+                "operationId": "getUser",
                 "description": "Utilize essa rota para listar as informações de um usuário utilizando sua chave de acesso",
                 "tags": ["users: Usuários"],
                 "responses": {
@@ -184,8 +193,9 @@
                 ]
             },
             "put": {
-                "summary": "[DESATIVADA] Atualiza um usuário através do ID.",
-                "deprecated": true,
+                "summary": "Atualiza um usuário através do ID.",
+                "deprecated": false,
+                "operationId": "updateUser",
                 "description": "Return user information",
                 "responses": {
                     "201":{
@@ -198,8 +208,9 @@
                 "tags": ["users: Usuários"]
             },
             "delete": {
-                "summary": "[DESATIVADA] Arquiva um usário específico através do ID.",
-                "deprecated": true,
+                "summary": "Exclui um usário específico através do ID.",
+                "deprecated": false,
+                "operationId": "deleteUser",
                 "description": "Return user information",
                 "responses": {
                     "201":{
@@ -216,6 +227,7 @@
             "post": {
                 "summary": "[DESATIVADA] Reverte o arquivamento de um usuário.",
                 "deprecated": true,
+                "operationId": "undeleteUser",
                 "description": "Utilize esta função para criar novos usuários na plataforma. Usuário é uma das entidades básicas do sistema. Ele representa a pessoa física ou jurídica que possui uma ou mais assinaturas.",
                 "responses": {
                     "201":{
@@ -240,6 +252,7 @@
         "/v1/user/authenticate": {
             "post": {
                 "summary": "Valida um usuário e retorna uma chave de acesso.",
+                "operationId": "loginUser",
                 "description": "Utilize esta função autorizar os acesso de um usuário a plataforma.",
                 "responses": {
                     "201":{
@@ -270,6 +283,7 @@
             },
             "put": {
                 "summary": "Extende a chave de acesso de um usuário.",
+                "operationId": "refreshUser",
                 "description": "Utilize esta função para extender o acesso de um usuário.",
                 "responses": {
                     "201":{
@@ -296,6 +310,7 @@
         "/v1/user/feedback": {
             "post": {
                 "summary": "Cadastra a avaliação de um usuário",
+                "operationId": "createFeedback",
                 "description": "Utilize esta função para adicionar a avaliação de um usuário no sistema.",
                 "responses": {
                     "201":{
@@ -326,6 +341,7 @@
         "/v1/user/validate": {
             "post": {
                 "summary": "Verifica se um email existe no sistema",
+                "operationId": "validateUser",
                 "description": "Utilize esta função para verificar se um email já existe no sistema.",
                 "responses": {
                     "201":{
@@ -356,6 +372,7 @@
         "/v1/user/password": {
             "put": {
                 "summary": "Requisita uma senha de emergência",
+                "operationId": "updatePassword",
                 "description": "Utilize esta função para perdir uma senha de acesso ao sistema.",
                 "responses": {
                     "201":{
@@ -386,6 +403,7 @@
         "/v1/user/code": {
             "post": {
                 "summary": "Confirma o email de um usuário.",
+                "operationId": "confirmEmail",
                 "description": "Utilize essa função para confirmar o email de um usuário.",
                 "responses": {
                     "201":{
@@ -418,6 +436,7 @@
             },
             "put": {
                 "summary": "Requisita um novo código de confirmação.",
+                "operationId": "refreshCode",
                 "description": "Utilize esta função para pedir um novo código para confirmar email.",
                 "responses": {
                     "201":{
@@ -448,6 +467,7 @@
         "/v1/report": {
             "post": {
                 "summary": "Cadastra um relatório.",
+                "operationId": "createReport",
                 "description": "Utilize essa rota para salvar os dados do relatório no banco de dados.",
                 "tags": ["reports: Relatórios"],
                 "responses": {
@@ -470,6 +490,7 @@
             },
             "get": {
                 "summary": "Retorna todos relatórios de um usuário.",
+                "operationId": "getReport",
                 "description": "Utilize essa rota para listar todos os relatórios de um usuário.",
                 "tags": ["reports: Relatórios"],
                 "responses": {
@@ -517,6 +538,7 @@
         "/v1/report/:report_id": {
             "post": {
                 "summary": "Envia um relatório para núvem.",
+                "operationId": "uploadReport",
                 "description": "Utilize essa rota para enviar um pdf do relatório ao cloud.",
                 "tags": ["reports: Relatórios"],
                 "responses": {
@@ -538,12 +560,13 @@
             },
             "get": {
                 "summary": "Retorna as informações de um relatório ou o arquivo pdf.",
+                "operationId": "getOneReport",
                 "description": "Utilize essa função para listar um pdf com informações mais detalhadas, caso o usuário queira baixar esse arquivo deverá especificar ao sistema.",
                 "responses": {
-                    "201":{
+                    "201": {
                         "description": "Sucesso"
                     },
-                    "400":{
+                    "400": {
                         "description": "Erro"
                     }
                 },
@@ -566,13 +589,14 @@
         "/v1/debug": {
             "post": {
                 "summary": "Envia um arquivo de depuração para núvem.",
+                "operationId": "uploadDebug",
                 "description": "Utilize essa rota para enviar um arquivo de depuração para cloud.",
                 "tags": ["debug: Depuração"],
                 "responses": {
-                    "201":{
+                    "201": {
                         "description": "Sucesso"
                     },
-                    "400":{
+                    "400": {
                         "description": "Erro"
                     }
                 },
@@ -599,9 +623,13 @@
                     "login":{
                         "type": "object",
                         "$ref": "#/components/schemas/login"
+                    },
+                    "address":{
+                        "type": "object",
+                        "$ref": "#/components/schemas/address"
                     }
                 },
-                "required": ["registration_data", "login"]
+                "required": ["registration_data", "login", "address"]
             },
             "postV1Reports":{
                 "type": "object",
@@ -702,30 +730,49 @@
             "address": {
                 "type": "object",
                 "properties": {
-                    "cep": {
+                    "level2long": {
+                        "description": "Nome completo do estado",
                         "type": "string"
                     },
-                    "rua": {
+                    "level2short": {
+                        "description": "Nome abreviado do estado",
                         "type": "string"
                     },
-                    "bairro": {
+                    "level1long": {
+                        "description": "Nome completo da cidade",
                         "type": "string"
                     },
-                    "pais": {
+                    "level1short": {
+                        "description": "Nome abreviado da cidade",
                         "type": "string"
                     },
-                    "cidade": {
+                    "neighborhood": {
+                        "description": "Nome do bairro",
                         "type": "string"
                     },
-                    "estado": {
+                    "country": {
+                        "description": "Nome do país",
+                        "type": "string"
+                    },
+                    "countryCode": {
+                        "description": "Código do país",
+                        "type": "string"
+                    },
+                    "zipcode": {
+                        "description": "CEP",
                         "type": "string"
                     }
-                }
+                },
+                "required": ["level2long"]
             },
             "registration_data": {
                 "type": "object",
                 "properties": {
                     "name": {
+                        "description": "Nome do cliente",
+                        "type": "string"
+                    },
+                    "enterprise_name": {
                         "description": "Nome do cliente",
                         "type": "string"
                     },
