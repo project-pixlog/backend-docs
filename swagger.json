@@ -23,6 +23,9 @@
                 "requestBody": {
                     "content": {
                         "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/postV1Users"
+                            },
                             "example":{
                                 "registration_data":{
                                     "name": "Pixlog",
@@ -197,6 +200,25 @@
                 "deprecated": false,
                 "operationId": "updateUser",
                 "description": "Return user information",
+                "tags": ["users: Usuários"],
+                "requestBody": {
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/updateV1Users"
+                            },
+                            "example": {
+                                "registration_data":{
+                                    "name": "Golxip",
+                                    "phone": "+55 41 99321-5554"
+                                },
+                                "address":{
+                                    "level2long": "CURITIBA"
+                                }
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "201":{
                         "description": "Sucesso"
@@ -205,13 +227,34 @@
                         "description": "Erro"
                     }
                 },
-                "tags": ["users: Usuários"]
+                "parameters": [
+                    {
+                        "name": "x-auth-token",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhZmFlbEBwaXhsb2cuY29tLmJyIiwiaWF0IjoxNjUwOTA0MjAyLCJleHAiOjE2NTA5NDAyMDJ9.oiuVgGaaTIv324-K-X7zk8fzgJyh_Ub_lMURJuT4euo"
+                        }
+                    }
+                ]
             },
             "delete": {
                 "summary": "Exclui um usário específico através do ID.",
                 "deprecated": false,
                 "operationId": "deleteUser",
                 "description": "Return user information",
+                "parameters": [
+                    {
+                        "name": "x-auth-token",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhZmFlbEBwaXhsb2cuY29tLmJyIiwiaWF0IjoxNjUwOTA0MjAyLCJleHAiOjE2NTA5NDAyMDJ9.oiuVgGaaTIv324-K-X7zk8fzgJyh_Ub_lMURJuT4euo"
+                        }
+                    }
+                ],
                 "responses": {
                     "201":{
                         "description": "Sucesso"
@@ -335,6 +378,17 @@
                         }
                     }
                 },
+                "parameters": [
+                    {
+                        "name": "x-auth-token",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhZmFlbEBwaXhsb2cuY29tLmJyIiwiaWF0IjoxNjUwOTA0MjAyLCJleHAiOjE2NTA5NDAyMDJ9.oiuVgGaaTIv324-K-X7zk8fzgJyh_Ub_lMURJuT4euo"
+                        }
+                    }
+                ],
                 "tags": ["users: Usuários"]
             }
         },
@@ -486,7 +540,18 @@
                             }
                         }
                     }
-                }
+                },
+                "parameters": [
+                    {
+                        "name": "x-auth-token",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhZmFlbEBwaXhsb2cuY29tLmJyIiwiaWF0IjoxNjUwOTA0MjAyLCJleHAiOjE2NTA5NDAyMDJ9.oiuVgGaaTIv324-K-X7zk8fzgJyh_Ub_lMURJuT4euo"
+                        }
+                    }
+                ]
             },
             "get": {
                 "summary": "Retorna todos relatórios de um usuário.",
@@ -502,6 +567,15 @@
                     }
                 },
                 "parameters": [
+                    {
+                        "name": "x-auth-token",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhZmFlbEBwaXhsb2cuY29tLmJyIiwiaWF0IjoxNjUwOTA0MjAyLCJleHAiOjE2NTA5NDAyMDJ9.oiuVgGaaTIv324-K-X7zk8fzgJyh_Ub_lMURJuT4euo"
+                        }
+                    },
                     {
                         "name": "init",
                         "in": "query",
@@ -556,7 +630,18 @@
     
                         }
                     }
-                }
+                },
+                "parameters": [
+                    {
+                        "name": "x-auth-token",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhZmFlbEBwaXhsb2cuY29tLmJyIiwiaWF0IjoxNjUwOTA0MjAyLCJleHAiOjE2NTA5NDAyMDJ9.oiuVgGaaTIv324-K-X7zk8fzgJyh_Ub_lMURJuT4euo"
+                        }
+                    }
+                ]
             },
             "get": {
                 "summary": "Retorna as informações de um relatório ou o arquivo pdf.",
@@ -571,6 +656,15 @@
                     }
                 },
                 "parameters": [
+                    {
+                        "name": "x-auth-token",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhZmFlbEBwaXhsb2cuY29tLmJyIiwiaWF0IjoxNjUwOTA0MjAyLCJleHAiOjE2NTA5NDAyMDJ9.oiuVgGaaTIv324-K-X7zk8fzgJyh_Ub_lMURJuT4euo"
+                        }
+                    },
                     {
                         "name": "download",
                         "in": "query",
@@ -613,6 +707,27 @@
     },
     "components": {
         "schemas": {
+            "updateV1Users":{
+                "type": "object",
+                "properties":{
+                    "registration_data": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "phone": {
+                                "type":"string"
+                            }
+
+                        }
+                    },
+                    "address":{
+                        "type": "object",
+                        "$ref": "#/components/schemas/address"
+                    }
+                }
+            },
             "postV1Users":{
                 "type": "object",
                 "properties":{
