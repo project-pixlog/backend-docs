@@ -2,8 +2,5 @@
   "scripts": {
     "lint": "npx redoc-cli lint swagger.json",
     "build": "npx redoc-cli build -o index.html swagger.json"
-  },
-  "dependencies": {
-    "redoc-cli": "^0.13.16"
   }
 }
