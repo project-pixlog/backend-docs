@@ -212,8 +212,7 @@ paths:
     delete:
       summary: Desloga um usuário ou todos.
       operationId: signout
-      description: Utilize esta função para destruir a sessão de um usuário em um
-        ou mais dispositvos
+      description: Utilize esta função para destruir a sessão de um usuário em um ou mais dispositvos
       responses:
         '204':
           '$ref': '#/components/responses/204'
@@ -233,6 +232,51 @@ paths:
         schema:
           type: boolean
           example: true
+      tags:
+      - 'users: Usuários'
+    get: 
+      summary: Lista todas as sessões de uma conta.
+      operationId: getSessions
+      description: Utilize esta função para listar todas as sessões de uma conta.
+      responses:
+        '200':
+          description: Consulta realizada com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties: 
+                    session_id:
+                      type: string
+                    deviceModel:
+                      type: string
+                    deviceName:
+                      type: string
+                    refresh_token:
+                      type: string
+                    isBlocked:
+                      type: string
+                    login_id:
+                      type: string
+                    credits:
+                      type: number
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                        type: string
+                        format: date-time
+        '422':
+          '$ref': '#/components/responses/422'
+      parameters:
+      - name: x-auth-token
+        in: header
+        required: true
+        schema:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhZmFlbEBwaXhsb2cuY29tLmJyIiwiaWF0IjoxNjUwOTA0MjAyLCJleHAiOjE2NTA5NDAyMDJ9.oiuVgGaaTIv324-K-X7zk8fzgJyh_Ub_lMURJuT4euo
       tags:
       - 'users: Usuários'
   "/v1/authenticate:session_id":
