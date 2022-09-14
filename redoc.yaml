@@ -208,6 +208,52 @@ paths:
               "$ref": "#/components/schemas/postV1Users"
       tags:
       - 'users: Usuários'
+  "/v1/authenticate":
+    delete:
+      summary: Desloga um usuário ou todos.
+      operationId: signout
+      description: Utilize esta função para destruir a sessão de um usuário em um
+        ou mais dispositvos
+      responses:
+        '204':
+          '$ref': '#/components/responses/204'
+        '422':
+          '$ref': '#/components/responses/422'
+      parameters:
+      - name: x-auth-token
+        in: header
+        required: true
+        schema:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhZmFlbEBwaXhsb2cuY29tLmJyIiwiaWF0IjoxNjUwOTA0MjAyLCJleHAiOjE2NTA5NDAyMDJ9.oiuVgGaaTIv324-K-X7zk8fzgJyh_Ub_lMURJuT4euo
+      - name: all
+        in: query
+        required: false
+        description: Destruir todas as sessões ou apenas a atual.
+        schema:
+          type: boolean
+          example: true
+      tags:
+      - 'users: Usuários'
+  "/v1/authenticate:session_id":
+      delete:
+        summary: Desloga um usuário pelo identificador da sessão.
+        operationId: signoutBySessionId
+        description: Utilize esta função para destruir a sessão de um usuário pelo indentificador da sessão
+        responses:
+          '204':
+            '$ref': '#/components/responses/204'
+          '422':
+            '$ref': '#/components/responses/422'
+        parameters:
+        - name: x-auth-token
+          in: header
+          required: true
+          schema:
+            type: string
+            example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhZmFlbEBwaXhsb2cuY29tLmJyIiwiaWF0IjoxNjUwOTA0MjAyLCJleHAiOjE2NTA5NDAyMDJ9.oiuVgGaaTIv324-K-X7zk8fzgJyh_Ub_lMURJuT4euo
+        tags:
+        - 'users: Usuários'
   "/v1/user/authenticate":
     post:
       summary: Valida um usuário e retorna uma chave de acesso.
@@ -257,32 +303,6 @@ paths:
         schema:
           type: string
           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhZmFlbEBwaXhsb2cuY29tLmJyIiwiaWF0IjoxNjUwOTA0MjAyLCJleHAiOjE2NTA5NDAyMDJ9.oiuVgGaaTIv324-K-X7zk8fzgJyh_Ub_lMURJuT4euo
-      tags:
-      - 'users: Usuários'
-    delete:
-      summary: Desloga um usuário.
-      operationId: signout
-      description: Utilize esta função para destruir a sessão de um usuário em um
-        ou mais dispositvos
-      responses:
-        '204':
-          '$ref': '#/components/responses/204'
-        '422':
-          '$ref': '#/components/responses/422'
-      parameters:
-      - name: x-auth-token
-        in: header
-        required: true
-        schema:
-          type: string
-          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhZmFlbEBwaXhsb2cuY29tLmJyIiwiaWF0IjoxNjUwOTA0MjAyLCJleHAiOjE2NTA5NDAyMDJ9.oiuVgGaaTIv324-K-X7zk8fzgJyh_Ub_lMURJuT4euo
-      - name: all
-        in: query
-        required: false
-        description: Destruir todas as sessões ou apenas a atual.
-        schema:
-          type: boolean
-          example: true
       tags:
       - 'users: Usuários'
   "/v1/user/feedback":
@@ -758,15 +778,18 @@ components:
     BaseError:
       type: object
       properties:
-        errors:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-              details:
-                type: string
+        message:
+          type: object
+          properties:
+            errors:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  details:
+                    type: string
   responses:
     '204':
       description: Solicitação foi bem-sucedida, mas o cliente não precisa sair da
