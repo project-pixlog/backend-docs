@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "lint": "npx redoc-cli lint swagger.json",
-    "build": "npx redoc-cli build -o index.html swagger.json"
+    "lint": "npx redoc-cli lint redoc.yaml",
+    "build": "npx redoc-cli build -o index.html redoc.yaml"
   }
 }
