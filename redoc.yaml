@@ -223,6 +223,17 @@ paths:
                 example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhZmFlbEBwaXhsb2cuY29tLmJyIiwiaWF0IjoxNjUwOTA0MjAyLCJleHAiOjE2NTA5NDAyMDJ9.oiuVgGaaTIv324-K-X7zk8fzgJyh_Ub_lMURJuT4euo
         '400':
           description: Erro
+      parameters:
+        - name: device-model
+          in: header
+          schema: 
+            type: string
+            example: IPhone13
+        - name: device-name
+          in: header
+          schema: 
+            type: string
+            example: IPhone de Wellington
       requestBody:
         content:
           application/json:
