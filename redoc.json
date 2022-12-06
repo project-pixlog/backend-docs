@@ -838,7 +838,14 @@
 				],
 				"responses": {
 					"201": {
-						"$ref": "#/components/responses/201"
+						"description": "Sucesso",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/getV1ReportWrapped"
+								}
+							}
+						}
 					},
 					"422": {
 						"$ref": "#/components/responses/422"
@@ -1277,6 +1284,16 @@
 								"merged_report_number": {
 									"type": "integer",
 									"example": 1
+								},
+								"created_by": {
+									"type": "string",
+									"example": "c6Mq-GygbM_pamb-8xyZC",
+									"maxLength": 21,
+									"minLength": 21
+								},
+								"created_at": {
+									"type": "string",
+									"format": "date-time"
 								}
 							}
 						}
