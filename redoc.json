@@ -103,78 +103,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "object",
-									"properties": {
-										"reg_id": {
-											"type": "string"
-										},
-										"name": {
-											"type": "string"
-										},
-										"email": {
-											"type": "string"
-										},
-										"phone": {
-											"type": "string"
-										},
-										"cpf": {
-											"type": "string"
-										},
-										"subscriptions": {
-											"type": "string"
-										},
-										"credits": {
-											"type": "number"
-										},
-										"feedback": {
-											"type": "string",
-											"format": "date-time"
-										},
-										"workspace": {
-											"type": "array",
-											"items": {
-												"type": "object",
-												"properties": {
-													"workspace_id": {
-														"type": "string"
-													},
-													"name": {
-														"type": "string"
-													}
-												}
-											}
-										},
-										"invitations": {
-											"type": "array",
-											"items": {
-												"type": "object",
-												"properties": {
-													"reg_id": {
-														"type": "string"
-													},
-													"name": {
-														"type": "string"
-													}
-												}
-											}
-										}
-									}
-								},
-								"example": {
-									"reg_id": "r95CZXQDcz71Xzf5w0OFn",
-									"name": "Postman",
-									"email": "bruno@pixlog.com.br",
-									"phone": "+10 0 0000-0000",
-									"cpf": "122.456.789-10",
-									"subscription": "free",
-									"credits": 0,
-									"feedback": "2022-07-04T19:01:29.000Z",
-									"workspace": [
-
-									],
-									"invitations": [
-
-									]
+									"$ref":"#/components/schemas/getV1CurrentUser"
 								}
 							}
 						}
@@ -1294,6 +1223,108 @@
 								"created_at": {
 									"type": "string",
 									"format": "date-time"
+								}
+							}
+						}
+					}
+				}
+			},
+			"getV1CurrentUser":{
+				"type": "object",
+				"properties":{
+					"reg_id": {
+						"type": "string",
+						"example":"hhHcuXXeYvD9BukuaHY-l",
+						"maxLength": 21,
+						"minLength": 21
+					},
+					"login_id": {
+						"type": "string",
+						"example":"qV1chqYJviUJ67g3Q-NJQ",
+						"maxLength": 21,
+						"minLength": 21
+					},
+					"name": {
+						"type": "string",
+						"example": "O Desenvolvedor",
+						"maxLength": 255,
+						"minLength": 1
+					},
+					"enterprise_name": {
+						"type": "string",
+						"example": "Pixlog LTDA",
+						"maxLength": 255,
+						"minLength": 1
+					},
+					"email": {
+						"type": "string",
+						"example": "o_desenvolvedor@pixlog.com.br",
+						"maxLength": 255,
+						"minLength": 7
+					},
+					"phone": {
+						"type": "string",
+						"example": "+55 41 1692412157",
+						"maxLength": 255,
+						"minLength": 1
+					},
+					"cpf": {
+						"type": "string",
+						"example": "169.241.215.7",
+						"maxLength": 255,
+						"minLength": 1
+					},
+					"level2long": {
+						"type": "string",
+						"example": "Curitiba",
+						"maxLength": 255,
+						"minLength": 1
+					},
+					"feedback": {
+						"type": "string",
+						"format":"date-time"
+					},
+					"wallet": {
+						"type": "object",
+						"properties": {
+							"current_credits": {
+								"type": "string",
+								"example": 4844
+							},
+							"last_credits": {
+								"type": "string",
+								"format":"date-time"
+							}
+						}
+					},
+					"workspace": {
+						"type": "array"
+					},
+					"invitations": {
+						"type": "array"
+					},
+					"free_trial_available": {
+						"type": "boolean"
+					},
+					"reports": {
+						"type": "object",
+						"properties": {
+							"_ids_report": {
+								"type": "array",
+								"items": {
+									"type": "string",
+									"example": "-bvzwsJ2V4fLwVGVoaSsg",
+									"maxLength": 21,
+									"minLength": 21
+								}
+							},
+							"_ids_report_wrapped": {
+								"type": "array",
+								"items": {
+									"type": "string",
+									"example": "-WA8oOpB-k-bozytsoVKj",
+									"maxLength": 21,
+									"minLength": 21
 								}
 							}
 						}
