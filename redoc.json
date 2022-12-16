@@ -1175,6 +1175,15 @@
 					"additional_information": {
 						"type": "string",
 						"example": "Relatório de relatório legal feito com amor."
+					},
+					"original_timezone": {
+						"type": "string",
+						"example": "+0300",
+						"maxLength": 45
+					},
+					"original_creation_data": {
+						"type": "string",
+						"format": "date-time"
 					}
 				},
 				"required": [
@@ -1377,6 +1386,11 @@
 						"example": "metros",
 						"maxLength": 255
 					},
+					"original_timezone": {
+						"type": "string",
+						"example": "+0300",
+						"maxLength": 45
+					},
 					"scanned_at": {
 						"type": "string",
 						"format": "date-time"
@@ -1505,11 +1519,13 @@
 				"properties": {
 					"email": {
 						"description": "E-mail do cliente",
-						"type": "string"
+						"type": "string",
+						"format": "email"
 					},
 					"password": {
 						"description": "Senha do cliente",
-						"type": "string"
+						"type": "string",
+						"format": "password"
 					}
 				},
 				"required": [
