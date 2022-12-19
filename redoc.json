@@ -22,6 +22,36 @@
 		}
 	],
 	"paths": {
+		"/v1/sendFile": {
+			"post": {
+				"summary": "Envia um arquivo para o e-mail do cliente",
+				"tags": [
+					"reports: Relatórios"
+				],
+				"operationId": "sendFile",
+				"description": "Utilize essa função para enviar arquivos gerados localmente para o e-mail do cliente.",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/postV1SendFile"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/200"
+					},
+					"422": {
+						"$ref": "#/components/responses/422"
+					},
+					"500": {
+						"$ref": "#/components/responses/500"
+					}
+				}
+			}
+		},
 		"/v1/user": {
 			"post": {
 				"security": [],
@@ -1116,6 +1146,39 @@
 	},
 	"components": {
 		"schemas": {
+			"postV1SendFile": {
+				"type": "object",
+				"properties": {
+					"File": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"report_number": {
+									"type": "integer",
+									"example": 1
+								},
+								"filename": {
+									"type": "string",
+									"example": "cool_dev_report.pdf"
+								},
+								"encoded": {
+									"type": "string",
+									"format": "base64",
+									"example": "VGhlIGRldmVsb3BlciB0aGF0IHdyb3RlIHRoaXMgd2FudHMgeW91IHRvIGhhdmUgYSBnb29kIGRheSEK"
+								}
+							},
+							"required": [
+								"report_number",
+								"encoded"
+							]
+						}
+					}
+				},
+				"required": [
+					"File"
+				]
+			},
 			"updateV1Users": {
 				"type": "object",
 				"properties": {
@@ -1617,6 +1680,17 @@
 			}
 		},
 		"responses": {
+			"200": {
+				"description": "Solicitação foi bem-sucedida",
+				"content": {
+					"text/plain": {
+						"schema": {
+							"type": "string",
+							"example": "Ok"
+						}
+					}
+				}
+			},
 			"201": {
 				"description": "Solicitação foi bem-sucedida e que um novo recurso foi criado",
 				"content": {
