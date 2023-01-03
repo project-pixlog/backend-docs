@@ -603,7 +603,14 @@
 				],
 				"responses": {
 					"201": {
-						"description": "Sucesso"
+						"description": "Sucesso",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/getV1Reports"
+								}
+							}
+						}
 					},
 					"400": {
 						"description": "Erro"
@@ -628,10 +635,20 @@
 				],
 				"responses": {
 					"201": {
-						"description": "Sucesso"
+						"description": "Sucesso",
+						"content": {
+							"application/json": {
+								"schema":{
+									"$ref": "#/components/schemas/getV1Reports"
+								}
+							}
+						}
 					},
 					"400": {
-						"description": "Erro"
+						"$ref":"#/components/responses/400"
+					},
+					"422": {
+						"$ref":"#/components/responses/422"
 					}
 				},
 				"parameters": [
@@ -1282,7 +1299,7 @@
 									"maxLength": 255,
 									"minLength": 255
 								},
-								"merged_report_number": {
+								"counter": {
 									"type": "integer",
 									"example": 1
 								},
@@ -1403,148 +1420,355 @@
 					}
 				}
 			},
-			"postV1Reports": {
+			"getV1Reports": {
+				"required":[
+					"Reports"
+				],
 				"type": "object",
 				"properties": {
-					"duration_in_sec": {
-						"type": "integer",
-						"example": 392
-					},
-					"latitude": {
-						"type": "number",
-						"format": "float",
-						"example": -25.438365720891973,
-						"minimum": -90,
-						"maximum": 90
-					},
-					"longitude": {
-						"type": "number",
-						"format": "float",
-						"example": -49.2806723716233,
-						"minimum": -180,
-						"maximum": 180
-					},
-					"volume": {
-						"type": "number",
-						"format": "float",
-						"example": 30.5
-					},
-					"volume_formula": {
-						"type": "string",
-						"example": "cilíndrica",
-						"maxLength": 255
-					},
-					"specie_found": {
-						"type": "string",
-						"example": "pinus",
-						"maxLength": 255
-					},
-					"length": {
-						"type": "number",
-						"format": "float",
-						"example": 3.1
-					},
-					"measure_type": {
-						"type": "string",
-						"example": "metros",
-						"maxLength": 255
-					},
-					"original_timezone": {
-						"type": "string",
-						"example": "+0300",
-						"maxLength": 45
-					},
-					"scanned_at": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"logs": {
+					"Reports": {
 						"type": "array",
 						"items": {
+							"required": [
+								"scan_result",
+								"original_creation_date"
+							],
 							"type": "object",
 							"properties": {
-								"confiability": {
-									"type": "integer",
-									"format": "float",
-									"example": 0.8903588200176159
+								"_id_report": {
+									"type": "string",
+									"example": "ebu_c5IQTRlL5NQhuyO0s",
+									"maxLength": 21,
+									"minLength": 21
 								},
-								"height": {
-									"type": "integer",
-									"format": "float",
-									"example": 0.28
+								"_id_operator": {
+									"type": "string",
+									"example": "9mFzxhDXBxQq-zpsSMbA1",
+									"maxLength": 21,
+									"minLength": 21
 								},
-								"width": {
-									"type": "integer",
-									"format": "float",
-									"example": 0.25
+								"_id_purchaser": {
+									"type": "string",
+									"example": "9mFzxhDXBxQq-zpsSMbA1",
+									"maxLength": 21,
+									"minLength": 21
 								},
-								"position_x": {
-									"type": "integer",
-									"format": "float",
-									"example": 0.12294983577131324
+								"additional_information": {
+									"type": "string",
+									"maxLength": 255,
+									"example": "Relatório de relatório legal feito com amor.",
+									"description": "Informações adicinais do relatório"
 								},
-								"position_y": {
-									"type": "integer",
-									"format": "float",
-									"example": 0.1432519030286129
+								"original_timezone": {
+									"type": "string",
+									"maxLength": 45,
+									"example": "+0300",
+									"description": "Fuso horário original de quando o relatório foi criado"
+								},
+								"original_creation_date": {
+									"type": "string",
+									"format": "date-time",
+									"description": "Data original de quando o relatório fo criado"
+								},
+								"scan_result": {
+									"description": "Informações da medição",
+									"required": [
+										"duration_in_sec",
+										"latitude",
+										"longitude",
+										"volume",
+										"length",
+										"logs"
+									],
+									"type": "object",
+									"properties": {
+										"duration_in_sec": {
+											"type": "integer",
+											"example": 392,
+											"description": "Duração da medição"
+										},
+										"latitude": {
+											"type": "number",
+											"format": "float",
+											"example": -25.438365720891973,
+											"minimum": -90,
+											"maximum": 90,
+											"description": "Latitude"
+										},
+										"longitude": {
+											"type": "number",
+											"format": "float",
+											"example": -49.2806723716233,
+											"minimum": -180,
+											"maximum": 180,
+											"description": "Longitude"
+										},
+										"volume": {
+											"type": "number",
+											"format": "float",
+											"example": 30.5,
+											"description": "Volume detectado"
+										},
+										"volume_formula": {
+											"type": "string",
+											"example": "cilíndrica",
+											"maxLength": 255,
+											"description": "Fórmula utilizada para gerar volume"
+										},
+										"specie_found": {
+											"type": "string",
+											"example": "pinus",
+											"maxLength": 255,
+											"description": "Espécie da madeira medida"
+										},
+										"length": {
+											"type": "number",
+											"format": "float",
+											"example": 3.1,
+											"description": "Comprimento da pilha"
+										},
+										"address":{
+											"$ref": "#/components/schemas/address"
+										},
+										"logs": {
+											"description": "Informações dos diâmetros",
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {
+													"confiability": {
+														"type": "integer",
+														"format": "float",
+														"example": 0.8903588200176159,
+														"description": "Confiabilidade da detecção"
+													},
+													"height": {
+														"type": "integer",
+														"format": "float",
+														"example": 0.28,
+														"description": "Altura"
+													},
+													"width": {
+														"type": "integer",
+														"format": "float",
+														"example": 0.25,
+														"description": "Largura"
+													},
+													"position_x": {
+														"type": "integer",
+														"format": "float",
+														"example": 0.12294983577131324
+													},
+													"position_y": {
+														"type": "integer",
+														"format": "float",
+														"example": 0.1432519030286129
+													}
+												},
+												"required": [
+													"width",
+													"height",
+													"confiability"
+												]
+											}
+										}
+									}
 								}
-							},
-							"required": [
-								"position_y",
-								"position_x",
-								"width",
-								"height",
-								"confiability"
-							]
+							}
 						}
 					}
-				},
-				"required": [
-					"logs",
-					"scanned_at",
-					"measure_type",
-					"length",
-					"volume_formula",
-					"volume",
-					"longitude",
-					"latitude",
-					"duration_in_sec"
-				]
+				}
+			},
+			"postV1Reports": {
+				"required":[
+					"Reports"
+				],
+				"type": "object",
+				"properties": {
+					"Reports": {
+						"type": "array",
+						"items": {
+							"required": [
+								"scan_result",
+								"original_creation_date"
+							],
+							"type": "object",
+							"properties": {
+								"additional_information": {
+									"type": "string",
+									"maxLength": 255,
+									"example": "Relatório de relatório legal feito com amor.",
+									"description": "Informações adicinais do relatório"
+								},
+								"original_timezone": {
+									"type": "string",
+									"maxLength": 45,
+									"example": "+0300",
+									"description": "Fuso horário original de quando o relatório foi criado"
+								},
+								"original_creation_date": {
+									"type": "string",
+									"format": "date-time",
+									"description": "Data original de quando o relatório fo criado"
+								},
+								"scan_result": {
+									"description": "Informações da medição",
+									"required": [
+										"duration_in_sec",
+										"latitude",
+										"longitude",
+										"volume",
+										"length",
+										"logs"
+									],
+									"type": "object",
+									"properties": {
+										"duration_in_sec": {
+											"type": "integer",
+											"example": 392,
+											"description": "Duração da medição"
+										},
+										"latitude": {
+											"type": "number",
+											"format": "float",
+											"example": -25.438365720891973,
+											"minimum": -90,
+											"maximum": 90,
+											"description": "Latitude"
+										},
+										"longitude": {
+											"type": "number",
+											"format": "float",
+											"example": -49.2806723716233,
+											"minimum": -180,
+											"maximum": 180,
+											"description": "Longitude"
+										},
+										"volume": {
+											"type": "number",
+											"format": "float",
+											"example": 30.5,
+											"description": "Volume detectado"
+										},
+										"volume_formula": {
+											"type": "string",
+											"example": "cilíndrica",
+											"maxLength": 255,
+											"description": "Fórmula utilizada para gerar volume"
+										},
+										"specie_found": {
+											"type": "string",
+											"example": "pinus",
+											"maxLength": 255,
+											"description": "Espécie da madeira medida"
+										},
+										"length": {
+											"type": "number",
+											"format": "float",
+											"example": 3.1,
+											"description": "Comprimento da pilha"
+										},
+										"logs": {
+											"description": "Informações dos diâmetros",
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {
+													"confiability": {
+														"type": "integer",
+														"format": "float",
+														"example": 0.8903588200176159,
+														"description": "Confiabilidade da detecção"
+													},
+													"height": {
+														"type": "integer",
+														"format": "float",
+														"example": 0.28,
+														"description": "Altura"
+													},
+													"width": {
+														"type": "integer",
+														"format": "float",
+														"example": 0.25,
+														"description": "Largura"
+													},
+													"position_x": {
+														"type": "integer",
+														"format": "float",
+														"example": 0.12294983577131324
+													},
+													"position_y": {
+														"type": "integer",
+														"format": "float",
+														"example": 0.1432519030286129
+													}
+												},
+												"required": [
+													"width",
+													"height",
+													"confiability"
+												]
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
 			},
 			"address": {
 				"type": "object",
 				"properties": {
 					"level2long": {
 						"description": "Nome completo do estado",
-						"type": "string"
+						"type": "string",
+						"example": "Curitiba"
 					},
 					"level2short": {
 						"description": "Nome abreviado do estado",
-						"type": "string"
+						"type": "string",
+						"example": "Curitiba"
 					},
 					"level1long": {
 						"description": "Nome completo da cidade",
-						"type": "string"
+						"type": "string",
+						"example": "Paraná"
 					},
 					"level1short": {
 						"description": "Nome abreviado da cidade",
-						"type": "string"
+						"type": "string",
+						"example": "PR"
 					},
 					"neighborhood": {
 						"description": "Nome do bairro",
-						"type": "string"
+						"type": "string",
+						"example": "Batel"
+					},
+					"streetNumber": {
+						"description": "Número da rua",
+						"type": "string",
+						"example": "73"
+					},
+					"streetName": {
+						"description": "Nome da rua",
+						"type": "string",
+						"example": "Rua Buenos Aires"
 					},
 					"country": {
 						"description": "Nome do país",
-						"type": "string"
+						"type": "string",
+						"example": "Brasil"
 					},
 					"countryCode": {
 						"description": "Código do país",
-						"type": "string"
+						"type": "string",
+						"example": "BR"
 					},
 					"zipcode": {
 						"description": "CEP",
-						"type": "string"
+						"type": "string",
+						"example": "80250-070"
 					}
 				},
 				"required": [
