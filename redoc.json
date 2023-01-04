@@ -80,8 +80,11 @@
           }
         },
         "responses": {
-          "200": {
-            "$ref": "#/components/responses/200"
+          "201": {
+            "$ref": "#/components/responses/201"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
           },
           "422": {
             "$ref": "#/components/responses/422"
@@ -179,7 +182,7 @@
           "201": {
             "description": "Solicitação foi bem-sucedida e um novo recurso foi criado",
             "content": {
-              "application/json":{
+              "application/json": {
                 "schema":{
                   "$ref": "#/components/schemas/putV1Users"
                 }
@@ -204,10 +207,16 @@
         "description": "Return user information",
         "responses": {
           "201": {
-            "description": "Sucesso"
+            "$ref": "#/components/responses/201"
+          },
+          "401":{
+            "$ref":"#/components/responses/401"
+          },
+          "422":{
+            "$ref":"#/components/responses/422"
           },
           "400": {
-            "description": "Erro"
+            "$ref":"#/components/responses/400"
           }
         },
         "tags": [
@@ -434,10 +443,13 @@
         "description": "Utilize esta função para verificar se um email já existe no sistema.",
         "responses": {
           "201": {
-            "description": "Sucesso"
+            "$ref": "#/components/responses/201"
           },
-          "400": {
-            "description": "Erro"
+          "422": {
+            "$ref": "#/components/responses/422"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
           }
         },
         "requestBody": {
