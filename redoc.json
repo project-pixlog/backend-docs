@@ -7,7 +7,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "PixLog Backend",
-    "version": "1.0.0",
+    "version": "1.8.4",
     "license": {
       "name": "Pixlog",
       "url": "https://pixlog.com.br/termos-de-uso.html"
@@ -115,25 +115,8 @@
             "description": "Cliente cadastrado com sucesso.",
             "content": {
               "application/json": {
-                "example": {
-                  "registration_data": {
-                    "name": "Pixlog",
-                    "cpf": "627.820.760-51",
-                    "phone": "+55 41 99868-5562",
-                    "reg_id": "Bx4oyRJ6b3pTC8pn1YFyS",
-                    "credits": 0,
-                    "subscription": "free",
-                    "login_id": "8yCapVpTAVxHCuoDjPp7z"
-                  },
-                  "login": {
-                    "login_id": "8yCapVpTAVxHCuoDjPp7z",
-                    "email": "dev@pixlog.com.br",
-                    "password": "He8ytdfq"
-                  },
-                  "address": {
-                    "level2long": "CURITIBA",
-                    "address_id": "B5CapVpTAV3HoDSDjPp7z"
-                  }
+                "schema": {
+                  "$ref": "#/components/schemas/postV1Users"
                 }
               }
             }
@@ -194,16 +177,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/updateV1Users"
-              },
-              "example": {
-                "registration_data": {
-                  "name": "Golxip",
-                  "phone": "+55 41 99321-5554"
-                },
-                "address": {
-                  "level2long": "CURITIBA"
-                }
+                "$ref": "#/components/schemas/putV1Users"
               }
             }
           }
@@ -302,41 +276,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "session_id": {
-                        "type": "string"
-                      },
-                      "deviceModel": {
-                        "type": "string"
-                      },
-                      "deviceName": {
-                        "type": "string"
-                      },
-                      "refresh_token": {
-                        "type": "string"
-                      },
-                      "isBlocked": {
-                        "type": "string"
-                      },
-                      "login_id": {
-                        "type": "string"
-                      },
-                      "credits": {
-                        "type": "number"
-                      },
-                      "created_at": {
-                        "type": "string",
-                        "format": "date-time"
-                      },
-                      "updated_at": {
-                        "type": "string",
-                        "format": "date-time"
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/getV1Authenticate"
                 }
               }
             }
@@ -599,13 +539,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "example": "dev@pixlog.com.br"
-                  }
-                }
+                "$ref": "#/components/schemas/putV1UserCode"
               }
             }
           }
@@ -1166,6 +1100,52 @@
   },
   "components": {
     "schemas": {
+      "putV1UserCode": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "the_developer@pixlog.com.br"
+          }
+        }
+      },
+      "getV1Authenticate": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "session_id": {
+              "type": "string"
+            },
+            "deviceModel": {
+              "type": "string"
+            },
+            "deviceName": {
+              "type": "string"
+            },
+            "refresh_token": {
+              "type": "string"
+            },
+            "isBlocked": {
+              "type": "string"
+            },
+            "login_id": {
+              "type": "string"
+            },
+            "credits": {
+              "type": "number"
+            },
+            "created_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updated_at": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        }
+      },
       "postV1StartTrial": {
         "type": "object",
         "properties": {
@@ -1178,50 +1158,33 @@
           }
         }
       },
-      "postV1SendFile": {
+      "putV1Users": {
         "type": "object",
         "properties": {
-          "File": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "report_number": {
-                  "type": "integer",
-                  "example": 1
-                },
-                "filename": {
-                  "type": "string",
-                  "example": "cool_dev_report.pdf"
-                },
-                "encoded": {
-                  "type": "string",
-                  "format": "base64",
-                  "example": "VGhlIGRldmVsb3BlciB0aGF0IHdyb3RlIHRoaXMgd2FudHMgeW91IHRvIGhhdmUgYSBnb29kIGRheSEK"
-                }
-              },
-              "required": [
-                "report_number",
-                "encoded"
-              ]
+          "login": {
+            "type": "object",
+            "properties": {
+              "login": {
+                "type": "string",
+                "maxLength": 255,
+                "format": "password"
+              }
             }
-          }
-        },
-        "required": [
-          "File"
-        ]
-      },
-      "updateV1Users": {
-        "type": "object",
-        "properties": {
+          },
           "registration_data": {
             "type": "object",
             "properties": {
               "name": {
-                "type": "string"
+                "type": "string",
+                "description": "Nome do usuário",
+                "maxLength": 255,
+                "example": "Pixlog Developer"
               },
               "phone": {
-                "type": "string"
+                "type": "string",
+                "description": "Número de telefone do usuário.",
+                "maxLength": 255,
+                "example": "+00 00 0 0000-0000"
               }
             }
           },
@@ -1959,6 +1922,39 @@
         "required": [
           "email",
           "password"
+        ]
+      },
+      "postV1SendFile": {
+        "type": "object",
+        "properties": {
+          "File": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "report_number": {
+                  "type": "integer",
+                  "example": 1
+                },
+                "filename": {
+                  "type": "string",
+                  "example": "awesome_report.pdf"
+                },
+                "encoded": {
+                  "type": "string",
+                  "format": "base64",
+                  "example": "R29vZCBkYXkgc2lyIQ=="
+                }
+              },
+              "required": [
+                "report_number",
+                "encoded"
+              ]
+            }
+          }
+        },
+        "required": [
+          "File"
         ]
       },
       "getStatiV1": {
