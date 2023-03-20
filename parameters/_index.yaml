@@ -1,0 +1,15 @@
+# query
+
+end:
+  $ref: query/end.yaml
+init:
+  $ref: query/init.yaml
+limit:
+  $ref: query/limit.yaml
+
+# path
+
+reportId:
+  $ref: path/reportId.yaml
+reportWrappedId:
+  $ref: path/reportWrappedId.yaml

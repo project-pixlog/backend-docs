@@ -1,0 +1,5 @@
+description: Erro de autenticação.
+content:
+  application/json:
+    schema:
+      $ref : ../../schemas/Error.yaml

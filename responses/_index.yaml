@@ -1,0 +1,13 @@
+# Errors
+badRequest:
+  $ref: default/BadRequestError.yaml
+notFound:
+  $ref: default/NotFoundError.yaml
+unprocessableEntity:
+  $ref: default/UnprocessableEntityError.yaml
+unexpectedError:
+  $ref: default/UnexpectedError.yaml
+
+# Success
+created:
+  $ref: default/Created.yaml

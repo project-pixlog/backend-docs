@@ -1,0 +1,9 @@
+type: object
+properties:
+  email:
+    description: Email do usuário
+    type: string
+    format: email
+  verification_code:
+    description: Código de verificação do email
+    type: string

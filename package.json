@@ -1,8 +1,8 @@
 {
   "scripts": {
-    "lint": "npx redoc-cli lint redoc.yaml",
+    "lint": "npx redoc-cli lint openapi.yaml",
     "build": "npm run transpile && npm run commit && npm run push",
-    "transpile": "npx redoc-cli build -o index.html redoc.json",
+    "transpile": "npx redoc-cli build -o index.html openapi.yaml",
     "commit": "git add . && git commit -m 'chore: update to docs'",
     "push": "git push origin main"
   }

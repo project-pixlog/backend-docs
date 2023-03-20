@@ -1,0 +1,12 @@
+type: object
+properties:
+  email:
+    description: Email do usuário
+    type: string
+    format: email
+    maxLength: 255
+  password:
+    description: Senha do usuário
+    type: string
+    format: password
+    maxLength: 255

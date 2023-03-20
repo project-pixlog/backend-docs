@@ -1,0 +1,27 @@
+type: array
+items: 
+  type: object
+  properties:
+    _id_credit_record:
+      type: string
+      maxLength: 21
+      minLength: 21
+    _id_registration_data:
+      type: string
+      maxLength: 21
+      minLength: 21
+    _id_report:
+      type: string
+      nullable: true
+      maxLength: 21
+      minLength: 21
+    debit:
+      type: number
+      nullable: true
+    credit:
+      type: number
+    balance:
+      type: number
+    created_at:
+      type: string
+      format: date-time

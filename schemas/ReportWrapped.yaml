@@ -1,0 +1,30 @@
+type: object
+required:
+  - Reports
+properties:
+  Reports:
+    type: array
+    items:
+      type: object
+      required:
+        - scan_result
+        - original_creation_date
+      properties:
+        additional_information:
+          description: Informações adicionais do relatório
+          type: string
+          maxLength: 255
+        original_timezone:
+          description: Fuso horário original de quando o relatório foi criado
+          type: string
+          maxLength: 45
+        original_creation_date:
+          description: Data original de quando o relatório foi criado
+          type: string
+          format: date-time
+        _ids_report:
+          description: ID dos relatórios 
+          type: array
+          items: 
+            type: string
+            maxLength: 21

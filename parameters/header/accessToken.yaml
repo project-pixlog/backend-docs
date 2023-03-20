@@ -1,0 +1,5 @@
+# name: x-auth-token
+# in: header
+# description: Token de acesso.
+# schema:
+#   type: string

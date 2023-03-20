@@ -1,0 +1,12 @@
+type: object
+properties:
+  receipt:
+    type: string
+  credit:
+    type: integer
+    minimum: 0
+  package_name:
+    type: string
+required:
+  - receipt
+  - credit

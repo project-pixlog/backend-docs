@@ -1,0 +1,5 @@
+type: object
+properties:
+  refresh_token:
+    description: Token para gerar um novo token de acesso.
+    type: string

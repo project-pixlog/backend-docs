@@ -1,0 +1,5 @@
+description: Parâmetros inválidos. Verificar erro na resposta.
+content:
+  application/json:
+    schema:
+      $ref : ../../schemas/Error.yaml

@@ -1,0 +1,6 @@
+name: reportId
+in: path
+required: true
+description: The id of the report to be fetched.
+schema:
+  type: string

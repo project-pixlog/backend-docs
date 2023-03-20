@@ -1,0 +1,5 @@
+# name: cookie
+# in: header
+# description: Token para gerar novos tokens de acesso.
+# schema:
+#   type: string

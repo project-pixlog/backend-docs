@@ -1,0 +1,9 @@
+type: object
+required:
+  - x-auth-token
+  - cookie
+properties:
+  x-auth-token:
+    type: string
+  cookie:
+    type: string

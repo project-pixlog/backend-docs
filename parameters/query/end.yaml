@@ -1,0 +1,7 @@
+name: end
+in: query
+description: Final date of the report
+required: false
+schema:
+  type: string
+  format: date-time

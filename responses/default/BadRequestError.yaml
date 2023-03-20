@@ -1,0 +1,5 @@
+description: Erro de sintaxe JSON no corpo do request.
+content:
+  application/json:
+    schema:
+      $ref : ../../schemas/Error.yaml

@@ -1,0 +1,7 @@
+name: init
+in: query
+description: The initial date to return.
+required: false
+schema:
+  type: string
+  format: date-time

@@ -1,0 +1,6 @@
+type: object
+required:
+  - x-auth-token
+properties:
+  x-auth-token:
+    type: string

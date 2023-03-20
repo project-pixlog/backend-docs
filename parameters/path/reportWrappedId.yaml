@@ -1,0 +1,6 @@
+name: reportWrappedId
+in: path
+required: true
+description: The id of the report wrapped to be fetched.
+schema:
+  type: string

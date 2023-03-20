@@ -1,0 +1,11 @@
+type: object
+properties:
+  rating:
+    description: Nota do feedback
+    type: integer
+    maximum: 5
+    minimum: 1
+  description:
+    description: Descrição do feedback
+    type: string
+    maxLength: 255
