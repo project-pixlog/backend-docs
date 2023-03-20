@@ -35,6 +35,10 @@ tags:
     description: Endpoints relacionados a coleta de feedbacks dos usuários.
   - name: "notifications: Notificações"
     description: Endpoints relacionados a notificações por e-mail.
+  - name: "debug: Debug"
+    description: Endpoints relacionados a debug.
+  - name: "static: Arquivos estáticos"
+    description: Endpoints relacionados a arquivos estáticos.
 
 paths:
   # Auth endpoints
@@ -660,3 +664,37 @@ paths:
           $ref: responses/default/BadRequestError.yaml
         422:
           $ref: responses/default/UnprocessableEntityError.yaml
+  # Debug
+  /debug:
+    post:
+      summary: Envia um arquivo de debug do Scarf.
+      description: Envia um arquivo de debug do Scarf.
+      operationId: sendDebug
+      tags:
+        - "debug: Debug"
+      responses:
+        200:
+          description: Operação realizada com sucesso.
+          content:
+            plain/text:
+              schema:
+                type: string
+                example: "Ok"
+        400:
+          $ref: responses/default/BadRequestError.yaml
+        422:
+          $ref: responses/default/UnprocessableEntityError.yaml
+
+  # Statistics endpoints
+  /statics:
+    get:
+      summary: Retorna arquivo estático
+      description: Retorna arquivo estático.
+      operationId: getStatic
+      tags:
+        - "static: Arquivos estáticos"
+      responses:
+        200:
+          description: Consulta realizada com sucesso.
+        404:
+          $ref: responses/default/NotFoundError.yaml
