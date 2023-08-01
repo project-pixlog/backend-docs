@@ -1,0 +1,36 @@
+type: object
+required:
+  - status
+  - version
+  - timestamp
+  - uptime
+  - dependencies
+properties:
+  status:
+    type: string
+    enum:
+      - ok
+      - error
+  version:
+    type: string
+  timestamp:
+    type: string
+    format: date-time
+  uptime:
+    type: number
+  dependencies:
+    type: object
+    required:
+      - database
+      - cacheService
+    properties:
+      database:
+        type: string
+        enum:
+          - ok
+          - error
+      cacheService:
+        type: string
+        enum:
+          - ok
+          - error

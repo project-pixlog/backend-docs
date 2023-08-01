@@ -9,8 +9,8 @@ security:
   - accessToken: []
 
 info:
-  title: PXLG Main API
-  version: "v1.9.0"
+  title: Main API
+  version: "v2.0.0"
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
@@ -25,9 +25,9 @@ tags:
     description: Endpoints relacionados a gerenciamento de usuários.
   - name: "auth: Autenticação"
     description: Endpoints relacionados a autenticação de usuários.
-  - name: "reports: Relatórios de escaneamento"
+  - name: "scans: Relatórios de escaneamento"
     description: Endpoints relacionados a geração de relatórios de escaneamento.
-  - name: "reports wrapped: Relatórios gerais"
+  - name: "merged: Relatórios gerais"
     description: Endpoints relacionados a geração de relatórios gerais.
   - name: "payments: Pagamentos"
     description: Endpoints relacionados a processamento de pagamentos.
@@ -39,12 +39,13 @@ tags:
     description: Endpoints relacionados a debug.
   - name: "static: Arquivos estáticos"
     description: Endpoints relacionados a arquivos estáticos.
+  - name: "monitoring: Monitoramento da API"
+    description: Endpoints relacionados a monitoramento da API.
 
 paths:
-  # Auth endpoints
   /auth:
     post:
-      summary: Autentica um usuário
+      summary: Autentica um usuário.
       description: Autentica um usuário.
       operationId: login
       tags:
@@ -67,15 +68,16 @@ paths:
           $ref: responses/default/BadRequestError.yaml
         422:
           $ref: responses/default/UnprocessableEntityError.yaml
+
   /refreshToken:
     post:
-      summary: Gera um novo token de acesso
+      summary: Gera um novo token de acesso.
       description: Gera um novo token de acesso.
       operationId: refreshToken
       tags:
         - "auth: Autenticação"
       security: []
-      requestBody: 
+      requestBody:
         required: true
         content:
           application/json:
@@ -92,6 +94,7 @@ paths:
           $ref: responses/default/BadRequestError.yaml
         422:
           $ref: responses/default/UnprocessableEntityError.yaml
+
   /signout:
     post:
       summary: Desloga um ou todos os usuários
@@ -114,7 +117,6 @@ paths:
         422:
           $ref: responses/default/UnprocessableEntityError.yaml
 
-  # Users endpoints
   /verifyEmail:
     post:
       summary: Verifica se o e-mail já está cadastrado
@@ -133,7 +135,7 @@ paths:
         200:
           description: E-mail disponível.
           content:
-            text/plain:
+            plain/text:
               schema:
                 type: string
                 example: Ok
@@ -141,10 +143,11 @@ paths:
           $ref: responses/default/BadRequestError.yaml
         422:
           $ref: responses/default/UnprocessableEntityError.yaml
+
   /user:
     post:
-      summary: Cadastra um novo usuário
-      description: Cadastra um novo usuário.
+      summary: Cadastra um novo usuário.
+      description: Utilize esta função para criar novas contas de usuário. Essa conta pode representar uma pessoa física ou jurídica que possui uma ou mais assinaturas.
       operationId: createUser
       tags:
         - "users: Usuários"
@@ -154,7 +157,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: schemas/User.yaml
+              $ref: schemas/postUser.yaml
+            example:
+              $ref: examples/postUser.yaml
       responses:
         201:
           description: Usuário criado com sucesso.
@@ -162,243 +167,243 @@ paths:
           $ref: responses/default/BadRequestError.yaml
         422:
           $ref: responses/default/UnprocessableEntityError.yaml
-    get:
-      summary: Retorna informações do usuário
-      description: Retorna informações do usuário.
-      operationId: getUserByEmail
-      tags:
-        - "users: Usuários"
-      responses:
-        200:
-          description: Consulta realizada com sucesso.
-          content:
-            application/json:
-              schema:
-                $ref: schemas/User.yaml
-        400:
-          $ref: responses/default/BadRequestError.yaml
-        422:
-          $ref: responses/default/UnprocessableEntityError.yaml
-    put:
-      summary: Atualiza informações do usuário
-      description: Atualiza informações do usuário.
-      operationId: updateUser
-      tags:
-        - "users: Usuários"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: schemas/User.yaml
-      responses:
-        200:
-          description: Usuário atualizado com sucesso.
-          content: 
-            text/plain:
-              schema:
-                type: string
-                example: Ok
-        400:
-          $ref: responses/default/BadRequestError.yaml
-        422:
-          $ref: responses/default/UnprocessableEntityError.yaml
-    delete:
-      summary: Desativa conta do usuário
-      description: Desativa conta do usuário.
-      operationId: deleteUser
-      tags:
-        - "users: Usuários"
-      responses:
-        200:
-          $ref: responses/default/Ok.yaml
-        400:
-          $ref: responses/default/BadRequestError.yaml
-        404:
-          $ref: responses/default/NotFoundError.yaml
-        422:
-          $ref: responses/default/UnprocessableEntityError.yaml
-  /confirmEmail:
-    post:
-      summary: Confirma e-mail do usuário com token de confirmação
-      description: Confirma e-mail do usuário com token de confirmação.
-      operationId: confirmEmail
-      tags:
-        - "users: Usuários"
-      security: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: schemas/postV1ConfirmEmail.yaml
-      responses:
-        200:
-          description: E-mail confirmado com sucesso.
-          content: 
-            text/plain:
-              schema:
-                type: string
-                example: Ok
-        400:
-          $ref: responses/default/BadRequestError.yaml
-        404:
-          $ref: responses/default/NotFoundError.yaml
-        422:
-          $ref: responses/default/UnprocessableEntityError.yaml
-  /generateConfirmEmailToken:
-    post: 
-      summary: Gera um novo token de confirmação de e-mail
-      description: Gera um novo token de confirmação de e-mail.
-      operationId: generateConfirmEmailToken
-      tags:
-        - "users: Usuários"
-      security: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: schemas/postV1GenerateConfirmEmailToken.yaml
-      responses:
-        200:
-          description: Operação realizada com sucesso.
-          content: 
-            text/plain:
-              schema:
-                type: string
-                example: Ok
-        400:
-          $ref: responses/default/BadRequestError.yaml
-        404:
-          $ref: responses/default/NotFoundError.yaml
-        422:
-          $ref: responses/default/UnprocessableEntityError.yaml
-  /generateResetPasswordToken:
-    post: 
-      summary: Gera um novo token de recuperação de senha
-      description: Gera um novo token de recuperação de senha.
-      operationId: generateResetPasswordToken
-      tags:
-        - "users: Usuários"
-      security: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: schemas/postV1GenerateResetPasswordToken.yaml
-      responses:
-        200:
-          description: Operação realizada com sucesso.
-          content: 
-            text/plain:
-              schema:
-                type: string
-                example: Ok
-        400:
-          $ref: responses/default/BadRequestError.yaml
-        404:
-          $ref: responses/default/NotFoundError.yaml
-        422:
-          $ref: responses/default/UnprocessableEntityError.yaml
-  /validateResetPasswordToken:
-    post:
-      summary: Valida um token de recuperação de senha
-      description: Valida um token de recuperação de senha.
-      operationId: validateResetPasswordToken
-      tags:
-        - "users: Usuários"
-      security: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: schemas/postV1ValidateResetPasswordToken.yaml
-      responses:
-        200:
-          description: Token válido.
-          content: 
-            text/plain:
-              schema:
-                type: string
-                example: Ok
-        400:
-          $ref: responses/default/BadRequestError.yaml
-        404:
-          $ref: responses/default/NotFoundError.yaml
-        422:
-          $ref: responses/default/UnprocessableEntityError.yaml
-  /changePasswordWithToken:
-    patch:
-      summary: Altera senha com o token de recuperação de senha
-      description: Altera senha com token de recuperação de senha.
-      operationId: changePasswordWithToken
-      tags:
-        - "users: Usuários"
-      security: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: schemas/patchV1ChangePasswordWithToken.yaml
-      responses: 
-        200:
-          description: Senha alterada com sucesso.
-          content:
-            text/plain:
-              schema:
-                type: string
-                example: Ok
-        400:
-          $ref: responses/default/BadRequestError.yaml
-        422:
-          $ref: responses/default/UnprocessableEntityError.yaml
-  /changePasswordUsingCurrent:
-    patch:
-      summary: Altera senha com a senha atual
-      description: Altera senha com a senha atual.
-      operationId: changePasswordUsingCurrent
-      tags:
-        - "users: Usuários"
-      security: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: schemas/patchV1ChangePasswordUsingCurrent.yaml
-      responses: 
-        200:
-          description: Senha alterada com sucesso.
-          content:
-            text/plain:
-              schema:
-                type: string
-                example: Ok
-        400:
-          $ref: responses/default/BadRequestError.yaml
-        422:
-          $ref: responses/default/UnprocessableEntityError.yaml
 
-  # Reports endpoints
-  /report:
+  #   get:
+  #     summary: Retorna informações do usuário
+  #     description: Retorna informações do usuário.
+  #     operationId: getUserByEmail
+  #     tags:
+  #       - "users: Usuários"
+  #     responses:
+  #       200:
+  #         description: Consulta realizada com sucesso.
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: schemas/User.yaml
+  #       400:
+  #         $ref: responses/default/BadRequestError.yaml
+  #       422:
+  #         $ref: responses/default/UnprocessableEntityError.yaml
+  #   put:
+  #     summary: Atualiza informações do usuário
+  #     description: Atualiza informações do usuário.
+  #     operationId: updateUser
+  #     tags:
+  #       - "users: Usuários"
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: schemas/User.yaml
+  #     responses:
+  #       200:
+  #         description: Usuário atualizado com sucesso.
+  #         content: 
+  #           text/plain:
+  #             schema:
+  #               type: string
+  #               example: Ok
+  #       400:
+  #         $ref: responses/default/BadRequestError.yaml
+  #       422:
+  #         $ref: responses/default/UnprocessableEntityError.yaml
+  #   delete:
+  #     summary: Desativa conta do usuário
+  #     description: Desativa conta do usuário.
+  #     operationId: deleteUser
+  #     tags:
+  #       - "users: Usuários"
+  #     responses:
+  #       200:
+  #         $ref: responses/default/Ok.yaml
+  #       400:
+  #         $ref: responses/default/BadRequestError.yaml
+  #       404:
+  #         $ref: responses/default/NotFoundError.yaml
+  #       422:
+  #         $ref: responses/default/UnprocessableEntityError.yaml
+  # /confirmEmail:
+  #   post:
+  #     summary: Confirma e-mail do usuário com token de confirmação
+  #     description: Confirma e-mail do usuário com token de confirmação.
+  #     operationId: confirmEmail
+  #     tags:
+  #       - "users: Usuários"
+  #     security: []
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: schemas/postV1ConfirmEmail.yaml
+  #     responses:
+  #       200:
+  #         description: E-mail confirmado com sucesso.
+  #         content: 
+  #           text/plain:
+  #             schema:
+  #               type: string
+  #               example: Ok
+  #       400:
+  #         $ref: responses/default/BadRequestError.yaml
+  #       404:
+  #         $ref: responses/default/NotFoundError.yaml
+  #       422:
+  #         $ref: responses/default/UnprocessableEntityError.yaml
+  # /generateConfirmEmailToken:
+  #   post: 
+  #     summary: Gera um novo token de confirmação de e-mail
+  #     description: Gera um novo token de confirmação de e-mail.
+  #     operationId: generateConfirmEmailToken
+  #     tags:
+  #       - "users: Usuários"
+  #     security: []
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: schemas/postV1GenerateConfirmEmailToken.yaml
+  #     responses:
+  #       200:
+  #         description: Operação realizada com sucesso.
+  #         content: 
+  #           text/plain:
+  #             schema:
+  #               type: string
+  #               example: Ok
+  #       400:
+  #         $ref: responses/default/BadRequestError.yaml
+  #       404:
+  #         $ref: responses/default/NotFoundError.yaml
+  #       422:
+  #         $ref: responses/default/UnprocessableEntityError.yaml
+  # /generateResetPasswordToken:
+  #   post: 
+  #     summary: Gera um novo token de recuperação de senha
+  #     description: Gera um novo token de recuperação de senha.
+  #     operationId: generateResetPasswordToken
+  #     tags:
+  #       - "users: Usuários"
+  #     security: []
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: schemas/postV1GenerateResetPasswordToken.yaml
+  #     responses:
+  #       200:
+  #         description: Operação realizada com sucesso.
+  #         content: 
+  #           text/plain:
+  #             schema:
+  #               type: string
+  #               example: Ok
+  #       400:
+  #         $ref: responses/default/BadRequestError.yaml
+  #       404:
+  #         $ref: responses/default/NotFoundError.yaml
+  #       422:
+  #         $ref: responses/default/UnprocessableEntityError.yaml
+  # /validateResetPasswordToken:
+  #   post:
+  #     summary: Valida um token de recuperação de senha
+  #     description: Valida um token de recuperação de senha.
+  #     operationId: validateResetPasswordToken
+  #     tags:
+  #       - "users: Usuários"
+  #     security: []
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: schemas/postV1ValidateResetPasswordToken.yaml
+  #     responses:
+  #       200:
+  #         description: Token válido.
+  #         content: 
+  #           text/plain:
+  #             schema:
+  #               type: string
+  #               example: Ok
+  #       400:
+  #         $ref: responses/default/BadRequestError.yaml
+  #       404:
+  #         $ref: responses/default/NotFoundError.yaml
+  #       422:
+  #         $ref: responses/default/UnprocessableEntityError.yaml
+  # /changePasswordWithToken:
+  #   patch:
+  #     summary: Altera senha com o token de recuperação de senha
+  #     description: Altera senha com token de recuperação de senha.
+  #     operationId: changePasswordWithToken
+  #     tags:
+  #       - "users: Usuários"
+  #     security: []
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: schemas/patchV1ChangePasswordWithToken.yaml
+  #     responses: 
+  #       200:
+  #         description: Senha alterada com sucesso.
+  #         content:
+  #           text/plain:
+  #             schema:
+  #               type: string
+  #               example: Ok
+  #       400:
+  #         $ref: responses/default/BadRequestError.yaml
+  #       422:
+  #         $ref: responses/default/UnprocessableEntityError.yaml
+  # /changePasswordUsingCurrent:
+  #   patch:
+  #     summary: Altera senha com a senha atual
+  #     description: Altera senha com a senha atual.
+  #     operationId: changePasswordUsingCurrent
+  #     tags:
+  #       - "users: Usuários"
+  #     security: []
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: schemas/patchV1ChangePasswordUsingCurrent.yaml
+  #     responses: 
+  #       200:
+  #         description: Senha alterada com sucesso.
+  #         content:
+  #           text/plain:
+  #             schema:
+  #               type: string
+  #               example: Ok
+  #       400:
+  #         $ref: responses/default/BadRequestError.yaml
+  #       422:
+  #         $ref: responses/default/UnprocessableEntityError.yaml
+
+  /scans:
     post:
-      summary: Cria um novo relatório de escaneamento
+      summary: Cria um novo relatório de escaneamento.
       description: Cria um novo relatório de escaneamento.
       operationId: createReport
       tags:
-        - "reports: Relatórios de escaneamento"
+        - "scans: Relatórios de escaneamento"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: schemas/postV1CreateReport.yaml
+              $ref: schemas/postScans.yaml
       responses:
         201:
-          $ref: responses/default/Created.yaml
+          description: Relatório de escaneamento criado com sucesso.
         422:
           $ref: responses/default/UnprocessableEntityError.yaml
     get:
@@ -406,7 +411,7 @@ paths:
       description: Retorna uma lista de relatórios de escaneamento.
       operationId: getReports
       tags:
-        - "reports: Relatórios de escaneamento"
+        - "scans: Relatórios de escaneamento"
       parameters:
         - $ref: parameters/query/init.yaml
         - $ref: parameters/query/end.yaml
@@ -417,18 +422,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: schemas/postV1CreateReport.yaml
+                $ref: schemas/getScans.yaml
         404:
           $ref: responses/default/NotFoundError.yaml
         422:
           $ref: responses/default/UnprocessableEntityError.yaml
-  /report/{reportId}:
+
+  /scans/{scanId}:
     get:
-      summary: Retorna um relatório de escaneamento específico através do ID
+      summary: Retorna um relatório de escaneamento específico através do ID.
       description: Retorna um relatório de escaneamento específico através do ID.
-      operationId: getReportById
+      operationId: getScanById
       tags:
-        - "reports: Relatórios de escaneamento"
+        - "scans: Relatórios de escaneamento"
       parameters:
         - $ref: parameters/path/reportId.yaml
       responses:
@@ -437,7 +443,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: schemas/postV1CreateReport.yaml
+                $ref: schemas/getScans.yaml
         400:
           $ref: responses/default/BadRequestError.yaml
         404:
@@ -445,37 +451,36 @@ paths:
         422:
           $ref: responses/default/UnprocessableEntityError.yaml
 
-  # Reports wrapped endpoints
-  /reportWrapped:
+  /merged:
     post:
-      summary: Cria um novo relatório geral
+      summary: Cria um novo relatório geral.
       description: Cria um novo relatório geral.
-      operationId: createReportWrapped
+      operationId: createMerged
       tags:
-        - "reports wrapped: Relatórios gerais"
+        - "merged: Relatórios gerais"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: schemas/ReportWrapped.yaml
+              $ref: schemas/postMerged.yaml
       responses:
         201:
           description: Relatório geral criado com sucesso.
           content:
             application/json:
               schema:
-                $ref: schemas/ReportWrapped.yaml
+                $ref: schemas/postMerged.yaml
         400:
           $ref: responses/default/BadRequestError.yaml
         422:
           $ref: responses/default/UnprocessableEntityError.yaml
     get:
-      summary: Retorna uma lista de relatórios gerais
+      summary: Retorna uma lista de relatórios gerais.
       description: Retorna uma lista de relatórios gerais.
-      operationId: getReportsWrapped
+      operationId: getMerged
       tags:
-        - "reports wrapped: Relatórios gerais"
+        - "merged: Relatórios gerais"
       parameters:
         - $ref: parameters/query/init.yaml
         - $ref: parameters/query/end.yaml
@@ -486,27 +491,28 @@ paths:
           content:
             application/json:
               schema:
-                $ref: schemas/ReportWrapped.yaml
+                $ref: schemas/postMerged.yaml
         400:
           $ref: responses/default/NotFoundError.yaml
         422:
           $ref: responses/default/UnprocessableEntityError.yaml
-  /reportWrapped/{reportWrappedId}:
+
+  /merged/{mergedId}:
     get:
       summary: Retorna um relatório geral específico através do ID
       description: Retorna um relatório geral específico através do ID.
-      operationId: getReportWrappedById
+      operationId: getMergedReportById
       tags:
-        - "reports wrapped: Relatórios gerais"
+        - "merged: Relatórios gerais"
       parameters:
-        - $ref: parameters/path/reportWrappedId.yaml
+        - $ref: parameters/path/mergedId.yaml
       responses:
         200:
           description: Relatório geral encontrado.
           content:
             application/json:
               schema:
-                $ref: schemas/ReportWrapped.yaml
+                $ref: schemas/getMerged.yaml
         400:
           $ref: responses/default/BadRequestError.yaml
         404:
@@ -514,187 +520,205 @@ paths:
         422:
           $ref: responses/default/UnprocessableEntityError.yaml
 
-  # Payment endpoints
-  /payment:
-    post:
-      summary: Cria um novo pagamento
-      description: Cria um novo pagamento.
-      operationId: createPayment
-      tags:
-        - "payments: Pagamentos"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: schemas/postV1CreatePayment.yaml
-      responses:
-        201:
-          description: Payment created
-          content:
-            plain/text:
-              schema:
-                type: string
-                example: "Ok"
-        400:  
-          $ref: responses/default/BadRequestError.yaml
-        422:
-          $ref: responses/default/UnprocessableEntityError.yaml
+  # # Payment endpoints
+  # /payment:
+  #   post:
+  #     summary: Cria um novo pagamento
+  #     description: Cria um novo pagamento.
+  #     operationId: createPayment
+  #     tags:
+  #       - "payments: Pagamentos"
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: schemas/postV1CreatePayment.yaml
+  #     responses:
+  #       201:
+  #         description: Payment created
+  #         content:
+  #           plain/text:
+  #             schema:
+  #               type: string
+  #               example: "Ok"
+  #       400:  
+  #         $ref: responses/default/BadRequestError.yaml
+  #       422:
+  #         $ref: responses/default/UnprocessableEntityError.yaml
+  #   get:
+  #     summary: Retorna uma lista de pagamentos
+  #     description: Retorna uma lista de pagamentos.
+  #     operationId: getPayments
+  #     tags:
+  #       - "payments: Pagamentos"
+  #     parameters:
+  #       - $ref: parameters/query/init.yaml
+  #       - $ref: parameters/query/end.yaml
+  #       - $ref: parameters/query/limit.yaml
+  #     responses:
+  #       200:
+  #         description: Consulta realizada com sucesso.
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: schemas/getV1ListPayments.yaml
+  #       400:
+  #         $ref: responses/default/BadRequestError.yaml
+  #       404:
+  #         $ref: responses/default/NotFoundError.yaml
+  #       422:
+  #         $ref: responses/default/UnprocessableEntityError.yaml
+  # /payment/{paymentId}:
+  #   get:
+  #     summary: Retorna um pagamento específico através do ID
+  #     description: Retorna um pagamento específico através do ID.
+  #     operationId: getPaymentById
+  #     tags:
+  #       - "payments: Pagamentos"
+  #     parameters:
+  #       - $ref: parameters/path/paymentId.yaml
+  #     responses:
+  #       200:
+  #         description: Pagamento encontrado.
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: schemas/getV1GetPaymentById.yaml
+  #       400:
+  #         $ref: responses/default/BadRequestError.yaml
+  #       404:
+  #         $ref: responses/default/NotFoundError.yaml
+  #       422:
+  #         $ref: responses/default/UnprocessableEntityError.yaml
+  # /startTrial:
+  #   post:
+  #     summary: Inicia um período de teste
+  #     description: Inicia um período de teste.
+  #     operationId: startTrial
+  #     tags:
+  #       - "payments: Pagamentos"
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: schemas/postV1StartTrial.yaml
+  #     responses:
+  #       200:
+  #         description: Operação realizada com sucesso.
+  #         content:
+  #           plain/text:
+  #             schema:
+  #               type: string
+  #               example: "Ok"
+  #       400:
+  #         $ref: responses/default/BadRequestError.yaml
+  #       422:
+  #         $ref: responses/default/UnprocessableEntityError.yaml
+
+  # # Feedback endpoints
+  # /feedback:
+  #   post:
+  #     summary: Cria um novo feedback
+  #     description: Cria um novo feedback.
+  #     operationId: createFeedback
+  #     tags:
+  #       - "feedbacks: Feedbacks"
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: schemas/postV1CreateFeedback.yaml
+  #     responses:
+  #       201:
+  #         description: Feedback criado com sucesso.
+  #         content:
+  #           plain/text:
+  #             schema:
+  #               type: string
+  #               example: "Ok"
+  #       400:  
+  #         $ref: responses/default/BadRequestError.yaml
+  #       422:
+  #         $ref: responses/default/UnprocessableEntityError.yaml
+
+  # # Notifications endpoints
+  # /sendFile:
+  #   post: 
+  #     summary: Envia arquivos para um usuário
+  #     description: Envia arquivos para um usuário.
+  #     operationId: sendFile
+  #     tags:
+  #       - "notifications: Notificações"
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: schemas/postV1SendFile.yaml
+  #     responses: 
+  #       200:
+  #         description: Operação realizada com sucesso.
+  #         content:
+  #           plain/text:
+  #             schema:
+  #               type: string
+  #               example: "Ok"
+  #       400:
+  #         $ref: responses/default/BadRequestError.yaml
+  #       422:
+  #         $ref: responses/default/UnprocessableEntityError.yaml
+  # # Debug
+  # /debug:
+  #   post:
+  #     summary: Envia um arquivo de debug do Scarf.
+  #     description: Envia um arquivo de debug do Scarf.
+  #     operationId: sendDebug
+  #     tags:
+  #       - "debug: Debug"
+  #     responses:
+  #       200:
+  #         description: Operação realizada com sucesso.
+  #         content:
+  #           plain/text:
+  #             schema:
+  #               type: string
+  #               example: "Ok"
+  #       400:
+  #         $ref: responses/default/BadRequestError.yaml
+  #       422:
+  #         $ref: responses/default/UnprocessableEntityError.yaml
+
+  # # Statistics endpoints
+  # /statics:
+  #   get:
+  #     summary: Retorna arquivo estático
+  #     description: Retorna arquivo estático.
+  #     operationId: getStatic
+  #     tags:
+  #       - "static: Arquivos estáticos"
+  #     responses:
+  #       200:
+  #         description: Consulta realizada com sucesso.
+  #       404:
+  #         $ref: responses/default/NotFoundError.yaml
+
+  /monitoring/healthcheck:
     get:
-      summary: Retorna uma lista de pagamentos
-      description: Retorna uma lista de pagamentos.
-      operationId: getPayments
+      summary: Verifica se o servidor está online.
+      description: Verifica se o servidor está online.
+      operationId: healthcheck
       tags:
-        - "payments: Pagamentos"
-      parameters:
-        - $ref: parameters/query/init.yaml
-        - $ref: parameters/query/end.yaml
-        - $ref: parameters/query/limit.yaml
+        - "monitoring: Monitoramento da API"
+      security: []
       responses:
         200:
-          description: Consulta realizada com sucesso.
+          description: Ok.
           content:
             application/json:
               schema:
-                $ref: schemas/getV1ListPayments.yaml
-        400:
-          $ref: responses/default/BadRequestError.yaml
-        404:
-          $ref: responses/default/NotFoundError.yaml
-        422:
-          $ref: responses/default/UnprocessableEntityError.yaml
-  /payment/{paymentId}:
-    get:
-      summary: Retorna um pagamento específico através do ID
-      description: Retorna um pagamento específico através do ID.
-      operationId: getPaymentById
-      tags:
-        - "payments: Pagamentos"
-      parameters:
-        - $ref: parameters/path/paymentId.yaml
-      responses:
-        200:
-          description: Pagamento encontrado.
-          content:
-            application/json:
-              schema:
-                $ref: schemas/getV1GetPaymentById.yaml
-        400:
-          $ref: responses/default/BadRequestError.yaml
-        404:
-          $ref: responses/default/NotFoundError.yaml
-        422:
-          $ref: responses/default/UnprocessableEntityError.yaml
-  /startTrial:
-    post:
-      summary: Inicia um período de teste
-      description: Inicia um período de teste.
-      operationId: startTrial
-      tags:
-        - "payments: Pagamentos"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: schemas/postV1StartTrial.yaml
-      responses:
-        200:
-          description: Operação realizada com sucesso.
-          content:
-            plain/text:
-              schema:
-                type: string
-                example: "Ok"
-        400:
-          $ref: responses/default/BadRequestError.yaml
-        422:
-          $ref: responses/default/UnprocessableEntityError.yaml
-
-  # Feedback endpoints
-  /feedback:
-    post:
-      summary: Cria um novo feedback
-      description: Cria um novo feedback.
-      operationId: createFeedback
-      tags:
-        - "feedbacks: Feedbacks"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: schemas/postV1CreateFeedback.yaml
-      responses:
-        201:
-          description: Feedback criado com sucesso.
-          content:
-            plain/text:
-              schema:
-                type: string
-                example: "Ok"
-        400:  
-          $ref: responses/default/BadRequestError.yaml
-        422:
-          $ref: responses/default/UnprocessableEntityError.yaml
-
-  # Notifications endpoints
-  /sendFile:
-    post: 
-      summary: Envia arquivos para um usuário
-      description: Envia arquivos para um usuário.
-      operationId: sendFile
-      tags:
-        - "notifications: Notificações"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: schemas/postV1SendFile.yaml
-      responses: 
-        200:
-          description: Operação realizada com sucesso.
-          content:
-            plain/text:
-              schema:
-                type: string
-                example: "Ok"
-        400:
-          $ref: responses/default/BadRequestError.yaml
-        422:
-          $ref: responses/default/UnprocessableEntityError.yaml
-  # Debug
-  /debug:
-    post:
-      summary: Envia um arquivo de debug do Scarf.
-      description: Envia um arquivo de debug do Scarf.
-      operationId: sendDebug
-      tags:
-        - "debug: Debug"
-      responses:
-        200:
-          description: Operação realizada com sucesso.
-          content:
-            plain/text:
-              schema:
-                type: string
-                example: "Ok"
-        400:
-          $ref: responses/default/BadRequestError.yaml
-        422:
-          $ref: responses/default/UnprocessableEntityError.yaml
-
-  # Statistics endpoints
-  /statics:
-    get:
-      summary: Retorna arquivo estático
-      description: Retorna arquivo estático.
-      operationId: getStatic
-      tags:
-        - "static: Arquivos estáticos"
-      responses:
-        200:
-          description: Consulta realizada com sucesso.
-        404:
-          $ref: responses/default/NotFoundError.yaml
+                $ref: schemas/getHealthCheck.yaml
+        503:
+          description: Servidor offline.

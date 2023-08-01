@@ -1,0 +1,35 @@
+type: object
+properties:
+  UserAccount:
+    type: object
+    required:
+      - name
+      - doc
+      - email_address
+      - password
+    properties:
+      name:
+        description: Nome do usuário
+        type: string
+      enterprise_name:
+        description: Nome da empresa do usuário
+        type: string
+      doc:
+        description: Documento do usuário
+        type: string
+      phone:
+        description: Telefone do usuário
+        type: string
+      email_address:
+        description: Email do usuário.
+        type: string
+        format: email
+      password:
+        description: Senha do usuário.
+        type: string
+      physical_address:
+        type: object
+        properties:
+          level2long:
+            description: Nível 2 do endereço
+            type: string

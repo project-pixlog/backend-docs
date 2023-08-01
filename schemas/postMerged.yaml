@@ -1,0 +1,46 @@
+type: object
+required:
+  - Reports
+properties:
+  Reports:
+    type: array
+    uniqueItems: true
+    items:
+      type: object
+      required:
+        - scan_result
+        - original_creation_date
+      properties:
+        additional_information:
+          description: Informações adicionais do relatório
+          type: string
+        original_timezone:
+          description: Fuso horário original de quando o relatório foi criado
+          type: string
+        original_creation_date:
+          description: Data original de quando o relatório foi criado
+          type: string
+          format: date-time
+        app_version:
+          description: Versão do aplicativo que gerou o relatório
+          type: string
+        device:
+          description: Modelo do dispositivo que gerou o relatório
+          type: string
+        used_settings:
+          description: Configurações utilizadas para gerar o relatório
+          type: object
+          properties:
+            diameter_factor:
+              type: number
+              format: float
+            volume_factor:
+              type: number
+              format: float
+        _ids_report:
+          description: ID dos relatórios 
+          type: array
+          uniqueItems: true
+          items: 
+            type: string
+            format: nanoid

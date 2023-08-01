@@ -27,4 +27,4 @@ properties:
           type: array
           items: 
             type: string
-            maxLength: 21
+            format: nanoid

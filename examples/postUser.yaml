@@ -1,0 +1,9 @@
+UserAccount:
+  name: The Pixlog Developer
+  enterprise_name: Pixlog Tech LTDA
+  phone: (16) 9241-2157
+  doc: 816.500.400-00
+  email_address: pixlogtesting@pixlog.com.br
+  password: password123
+  physical_address:
+    level2long: Curitiba

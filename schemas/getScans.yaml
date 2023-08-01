@@ -1,0 +1,127 @@
+type: object
+required:
+  - Reports
+properties:
+  Reports:
+    type: array
+    uniqueItems: true
+    items:
+      type: object
+      required:
+        - scan_result
+        - original_creation_date
+      properties:
+        _id_report:
+          description: ID do relatório.
+          type: string
+          format: nanoid
+        _id_operator:
+          description: ID do operador.
+          type: string
+          format: nanoid
+        _id_purchaser:
+          description: ID do comprador.
+          type: string
+          format: nanoid
+        additional_information:
+          description: Informações adicionais do relatório.
+          type: string
+        original_timezone:
+          description: Fuso horário original de quando o relatório foi criado.
+          type: string
+        original_creation_date:
+          description: Data original de quando o relatório foi criado.
+          type: string
+          format: date-time
+        app_version:
+          description: Versão do aplicativo que gerou o relatório.
+          type: string
+        device:
+          description: Modelo do dispositivo que gerou o relatório.
+          type: string
+        used_settings:
+          description: Configurações utilizadas para gerar o relatório.
+          type: object
+          properties:
+            diameter_factor:
+              type: number
+              format: float
+            volume_factor:
+              type: number
+              format: float
+        scan_result:
+          type: object
+          required:
+            - duration_in_sec
+            - latitude
+            - longitude
+            - volume
+            - length
+          properties:
+            duration_in_sec:
+              description: Duração da medição em segundos.
+              type: integer
+            latitude:
+              description: Latitude da medição.
+              type: number
+              format: float
+              minimum: -90
+              maximum: 90
+            longitude:
+              description: Longitude da medição.
+              type: number
+              format: float
+              minimum: -180
+              maximum: 180
+            volume:
+              description: Volume detectado na medição.
+              type: number
+              format: float
+            volume_formula:
+              description: Fórmula utilizada para calcular o volume.
+              type: string
+              example: "cilíndrica"
+            specie_found:
+              description: Espécie da madeira medida.
+              type: string
+            length:
+              description: Comprimento da pilha de madeira medida.
+              type: number
+              format: float
+            sorting_min:
+              description: Valor mínimo de classificação.
+              type: number
+              format: float
+            sorting_max:
+              description: Valor máximo de classificação.
+              type: number
+              format: float
+            logs:
+              type: array
+              items:
+                type: object
+                required:
+                  - width
+                  - height
+                  - confiability
+                properties:
+                  confiability:
+                    description: Grau de confiabilidade da medição do diâmetro.
+                    type: integer
+                    format: float
+                  height:
+                    description: Altura do diâmetro medido.
+                    type: integer
+                    format: float
+                  width:
+                    description: Largura do diâmetro medido.
+                    type: integer
+                    format: float
+                  position_x:
+                    description: Posição X do diâmetro medido.
+                    type: integer
+                    format: float
+                  position_y:
+                    description: Posição Y do diâmetro medido.
+                    type: integer
+                    format: float

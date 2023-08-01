@@ -1,5 +1,7 @@
 type: object
+required:
+  - refreshToken
 properties:
-  refresh_token:
-    description: Token para gerar um novo token de acesso.
+  refreshToken:
+    description: Chave para gerar um novo token de acesso.
     type: string

@@ -1,12 +1,13 @@
 type: object
+required:
+  - email
+  - password
 properties:
   email:
-    description: Email do usuário
+    description: Email do usuário.
     type: string
     format: email
-    maxLength: 255
   password:
-    description: Senha do usuário
+    description: Senha do usuário.
     type: string
     format: password
-    maxLength: 255
