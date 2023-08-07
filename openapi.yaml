@@ -289,7 +289,71 @@ components:
           description: Código de verificação.
           maxLength: 4
           minLength: 4
-
+    postV2GenerateConfirmEmailToken:
+      type: object
+      properties:
+        emailAddress:
+          type: string
+          format: email
+          description: E-mail do usuário.
+    postV2ValidateResetPasswordToken:
+      type: object
+      properties:
+        emailAddress:
+          type: string
+          format: email
+          description: E-mail do usuário.
+        verificationCode:
+          type: string
+          description: Código de verificação.
+          maxLength: 4
+          minLength: 4
+    patchV2ChangePasswordWithToken:
+      type: object
+      properties:
+        emailAddress:
+          type: string
+          format: email
+          description: E-mail do usuário.
+        verificationCode:
+          type: string
+          description: Código de verificação.
+          maxLength: 4
+          minLength: 4
+        password:
+          type: string
+          format: password
+          description: Senha do usuário.
+    postV2ChangePasswordWithCurrent:
+      type: object
+      properties:
+        currentPassword:
+          type: string
+          format: password
+          description: Senha atual do usuário.
+        newPassword:
+          type: string
+          format: password
+          description: Nova senha do usuário.
+    postV2UserSettings:
+      type: object
+      properties:
+        updatedAtMs:
+          description: Data de atualização das configurações do usuário.
+          type: integer
+          format: int64
+        diameterFactor:
+          description: Fator de diâmetro.
+          type: number
+          format: float
+        volumeFactor:
+          description: Fator de volume.
+          type: number
+          format: float
+        overWrite:
+          description: Sobrescrever configurações.
+          type: boolean
+          default: false
     # Models
     Scans:
       type: object
@@ -427,37 +491,34 @@ components:
           status:
             $ref: "#/components/schemas/Scans/properties/status"
     Transaction:
-      type: object
-      properties:
-        Transactions:
-          type: array
-          uniqueItems: true
-          items:
-            properties:
-              transactionId:
-                description: Identificador único da transação.
-                type: string
-                format: nanoid
-              userId:
-                description: Identificador único do usuário.
-                type: string
-                format: nanoid
-              reportId: 
-                description: Identificador único do relatório.
-                type: string
-                format: nanoid
-              debit:
-                description: Valor debitado.
-                type: number
-                format: float
-              credit:
-                description: Valor creditado.
-                type: number
-                format: float
-              createdAt:
-                description: Data de criação da transação.
-                type: string
-                format: date-time
+      type: array
+      uniqueItems: true
+      items:
+        properties:
+          transactionId:
+            description: Identificador único da transação.
+            type: string
+            format: nanoid
+          userId:
+            description: Identificador único do usuário.
+            type: string
+            format: nanoid
+          reportId: 
+            description: Identificador único do relatório.
+            type: string
+            format: nanoid
+          debit:
+            description: Valor debitado.
+            type: number
+            format: float
+          credit:
+            description: Valor creditado.
+            type: number
+            format: float
+          createdAt:
+            description: Data de criação da transação.
+            type: string
+            format: date-time
     Group:
       type: object
       properties:
@@ -640,7 +701,11 @@ paths:
   /auth:
     post:
       summary: Autentica um usuário.
-      description: Autentica um usuário.
+      description: |
+        ## Descrição
+
+        Utilize esta função para autenticar um usuário e obter um token de acesso.
+
       operationId: login
       tags:
         - "Autenticação"
@@ -764,7 +829,109 @@ paths:
           $ref: responses/default/BadRequestError.yaml
         422:
           $ref: responses/default/UnprocessableEntityError.yaml
+  /generateResetPasswordToken:
+    post:
+      summary: Gera um token para redefinição de senha.
+      description: |
+        ## Descrição
 
+        Gera um token para redefinição de senha.
+      operationId: generateResetPasswordToken
+      tags:
+        - "Usuários"
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/postV2GenerateConfirmEmailToken"
+      responses:
+        200:
+          description: Token gerado com sucesso.
+        400:
+          $ref: responses/default/BadRequestError.yaml
+        404:
+          $ref: responses/default/NotFoundError.yaml
+        422:
+          $ref: responses/default/UnprocessableEntityError.yaml
+  /validateResetPasswordToken:
+    post:
+      summary: Valida um token para redefinição de senha.
+      description: |
+        ## Descrição
+
+        Valida um token para redefinição de senha.
+      operationId: validateResetPasswordToken
+      tags:
+        - "Usuários"
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/postV2GenerateConfirmEmailToken"
+      responses:
+        200:
+          description: Token validado com sucesso.
+        400:
+          $ref: responses/default/BadRequestError.yaml
+        404:
+          $ref: responses/default/NotFoundError.yaml
+        422:
+          $ref: responses/default/UnprocessableEntityError.yaml
+  /changePasswordWithToken:
+    patch:
+      summary: Altera a senha de um usuário.
+      description: |
+        ## Descrição
+
+        Altera a senha de um usuário.
+      operationId: changePasswordWithToken
+      tags:
+        - "Usuários"
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/patchV2ChangePasswordWithToken"
+      responses:
+        200:
+          description: Senha alterada com sucesso.
+        400:
+          $ref: responses/default/BadRequestError.yaml
+        404:
+          $ref: responses/default/NotFoundError.yaml
+        422:
+          $ref: responses/default/UnprocessableEntityError.yaml
+  /changePasswordUsingCurrent:
+    patch:
+      summary: Altera a senha de um usuário.
+      description: |
+        ## Descrição
+
+        Altera a senha de um usuário.
+      operationId: changePasswordUsingCurrent
+      tags:
+        - "Usuários"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/postV2ChangePasswordWithCurrent"
+      responses:
+        200:
+          description: Senha alterada com sucesso.
+        400:
+          $ref: responses/default/BadRequestError.yaml
+        404:
+          $ref: responses/default/NotFoundError.yaml
+        422:
+          $ref: responses/default/UnprocessableEntityError.yaml
   /users:
     post:
       summary: Cadastra um novo usuário.
@@ -1029,6 +1196,36 @@ paths:
           $ref: responses/default/NotFoundError.yaml
         422:
           $ref: responses/default/UnprocessableEntityError.yaml
+  /users/{userId}/settings:
+    post: 
+      summary: Atualiza as configurações de um usuário.
+      description: |
+        ## Descrição
+
+        Utilize esta função para atualizar as configurações de um usuário.
+      operationId: updateUserSettings
+      tags:
+        - "Usuários"
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/postV2UserSettings"
+      responses:
+        200:
+          description: Configurações atualizadas com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Users"
+        400:
+          $ref: responses/default/BadRequestError.yaml
+        404:
+          $ref: responses/default/NotFoundError.yaml
+        422:
+          $ref: responses/default/UnprocessableEntityError.yaml
   #   put:
   #     summary: Atualiza informações do usuário
   #     description: Atualiza informações do usuário.
@@ -1068,7 +1265,34 @@ paths:
   #         $ref: responses/default/NotFoundError.yaml
   #       422:
   #         $ref: responses/default/UnprocessableEntityError.yaml
-
+  # /confirmEmail:
+  #   post:
+  #     summary: Confirma e-mail do usuário com token de confirmação
+  #     description: Confirma e-mail do usuário com token de confirmação.
+  #     operationId: confirmEmail
+  #     tags:
+  #       - "Usuários"
+  #     security: []
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: schemas/postV1ConfirmEmail.yaml
+  #     responses:
+  #       200:
+  #         description: E-mail confirmado com sucesso.
+  #         content:
+  #           text/plain:
+  #             schema:
+  #               type: string
+  #               example: Ok
+  #       400:
+  #         $ref: responses/default/BadRequestError.yaml
+  #       404:
+  #         $ref: responses/default/NotFoundError.yaml
+  #       422:
+  #         $ref: responses/default/UnprocessableEntityError.yaml
   # /generateConfirmEmailToken:
   #   post:
   #     summary: Gera um novo token de confirmação de e-mail
